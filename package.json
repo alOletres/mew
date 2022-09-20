@@ -1,0 +1,19 @@
+{
+  "name": "mew",
+  "version": "1.0.0",
+  "description": "Backend for Resort Reservation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alOletres/mew.git"
+  },
+  "author": "Dexter Louie Aniez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alOletres/mew/issues"
+  },
+  "homepage": "https://github.com/alOletres/mew#readme"
+}
