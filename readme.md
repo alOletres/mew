@@ -1,7 +1,7 @@
 
 # How to run this server  
 Make sure this server is running to make your client functional. 
-Dapat irun ninyo ni nga server para mugana inyong frontend, or para mugana ang frontend.
+Dapat irun ninyo ni nga server para mugana inyong system, or para mugana ang frontend.
 
 ## Pre-requisites
 Make sure you have NodeJS installed on your machine.
