@@ -1,0 +1,30 @@
+export enum ESQLReference {
+  SELECT = "select",          /** <-- Select data from database */
+  FROM = "from",              /** <-- Specify table we're pulling from */
+  WHERE = "where",            /** <-- Filter query to match condition */
+  AS = "as",                  /** <-- Rename table or column with alias */
+  JOIN = "join",              /** <-- Combine rows from 2 or more tables */
+  AND = "and",                /** <-- Combine query conditions, all must be met */
+  OR = "or",                  /** <-- Combine query conditions, one must be met */
+  LIMIT = "limit",            /** <-- Limit rows returned, See also FETCH and TOP */
+  IN = "in",                  /** <-- Specify multiple values when using WHERE */
+  CASE = "case",              /** <-- Return value on a specified condition */
+  IS_NULL = "is null",        /** <-- Return only rows with a null value */
+  LIKE = "like",              /** <-- Search for patterns in column */
+  COMMIT = "commit",          /** <-- Write transaction to database */
+  ROLLBACK = "rollback",      /** <-- Undo a transaction block */
+  ALTER_TABLE = "alter table",/** <-- Add/Remove columns from the table */
+  UPDATE = "update",          /** <-- Update table data */
+  CREATE = "create",          /** <-- Create TABLE, DATABASE, INDEX or VIEW */
+  DELETE = "delete",          /** <-- Delete rows from table */
+  INSERT = "insert",          /** <-- Add single row to the table */
+  DROP = "drop",              /** <-- Delete TABLE, DATABASE or INDEX */
+  GROUP_BY = "group by",      /** <-- Group data into logical sets */
+  ORDER_BY = "order by",      /** <-- Set order of result. Use DESC to reverse the order. */
+  HAVING = "having",          /** <-- Same as where but filters groups */
+  COUNT = "count",            /** <-- Count number of rows */
+  SUM = "sum",                /** <-- Return sum of column */
+  AVG = "avg",                /** <-- Return average of column */
+  MIN = "min",                /** <-- Return min value of column */
+  MAX = "max",                /** <-- Return max value of column */
+}
