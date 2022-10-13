@@ -1,8 +1,9 @@
 import {Request, Response} from "express"
 import {Connection} from "promise-mysql"
-import {ErrorException, catchError} from "./../utils";
-import {ILogin} from "./../types"
+import {ErrorException, catchError, validateToken, generateToken} from "./../utils";
+import {ILogin, IRequestRefreshToken} from "./../types"
 import {AUTH_QUERIES} from "./../services"
+import {COMMON_QUERIES, TOKEN_EXPIRY} from "./../constants"
 
 export const AuthController = {
   LOGIN: async (req: Request, res: Response) => {
@@ -33,8 +34,41 @@ export const AuthController = {
     }
   },
   REFRESH_TOKEN: async (req: Request, res: Response) => {
+    const connection: Connection = req._config_.connection as Connection
+
     try {
-      
+      const {
+        email,
+        token
+      }: IRequestRefreshToken = req.body
+
+      if (!email || !token) throw new ErrorException("Email and refresh token is required.")
+
+      const validate = await validateToken(token, email, connection)
+
+      if (!validate) throw new ErrorException("Email provided is invalid.")
+
+      /**
+       * 
+       * Since refresh token is valid, create a fresh token
+       */
+      const tokenPayload = {
+        email,
+        createdAt: Date.now()
+      }
+
+      const accessToken: string = generateToken("access", tokenPayload)
+      const refreshToken: string = generateToken("refresh", tokenPayload)
+
+      await connection.query(COMMON_QUERIES.SET_REFRESH_TOKEN, [refreshToken, email])
+
+      res.status(200).send({
+        message: "Token successfully generated.",
+        data: {
+          accessToken, refreshToken,
+          TOKEN_EXPIRY
+        }
+      })
     } catch (err) {
       const error: ErrorException = err as ErrorException
 

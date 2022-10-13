@@ -4,6 +4,7 @@ import { ErrorException } from './errors';
 import {AUTH_QUERIES} from "./../services"
 import { Connection } from "promise-mysql";
 import {hashSync, compareSync} from "bcrypt"
+import {TOKEN_EXPIRY} from "./../constants"
 
 export const generateToken = (
   type: "access" | "refresh",
@@ -17,7 +18,7 @@ export const generateToken = (
     if (!secret) throw new ErrorException("Secret key is not defined.")
 
     const signOptions: SignOptions | undefined = type === "access"
-      ? { expiresIn: 600 } /** <-- Token expires in 10 minutes */
+      ? { expiresIn: TOKEN_EXPIRY }
       : undefined
 
     return sign(payload, secret, signOptions)
@@ -26,15 +27,19 @@ export const generateToken = (
   }
 }
 
-export const verifyToken = async (
+export const validateToken = async (
   token: string,
   email: string,
   connection: Connection
-) => {
+): Promise<boolean> => {
   try {
-    const isExisting = await AUTH_QUERIES.VERIFY_TOKEN(connection, email)
+    const refreshToken = await AUTH_QUERIES.GET_REFRESH_TOKEN(connection, email)
 
-    if (!isExisting || !isExisting.values?.length) throw new ErrorException("User is logged out.")
+    if (!refreshToken) throw new ErrorException("User is logged out.")
+
+    if (refreshToken !== token) throw new ErrorException("Refresh token provided is invalid.", 403)
+
+    return true
   } catch (err) {
     throw err
   }

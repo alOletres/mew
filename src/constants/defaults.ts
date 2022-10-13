@@ -1,0 +1,1 @@
+export const TOKEN_EXPIRY = 86400 /** <-- in seconds, 24 hours expiry/1 day */

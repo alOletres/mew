@@ -1,4 +1,4 @@
-export interface IVerifyToken {
+export interface IRequestRefreshToken {
   email: string;
   token: string;
 }
