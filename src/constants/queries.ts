@@ -37,5 +37,15 @@ export const COMMON_QUERIES = {
     INSERT INTO ${DB_TABLES.USERS}
     (${role}, ${firstname}, ${lastname}, ${address}, ${mobile_number}, ${email}, ${password})
     VALUES(?, ?, ?, ?, ?, ?, ?)
+  `,
+  LOGIN: `
+    SELECT ${password}
+    from ${DB_TABLES.USERS}
+    where ${email}=?
+  `,
+  SET_REFRESH_TOKEN: `
+    UPDATE ${DB_TABLES.USERS}
+    SET ${refresh_token}=?
+    WHERE ${email}=?
   `
 }

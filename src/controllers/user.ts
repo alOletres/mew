@@ -1,6 +1,6 @@
 import {Request, Response} from "express"
 import {ErrorException, catchError, hashPassword} from "./../utils"
-import {IUser, TUserRole, PreConfiguredRequest} from "./../types"
+import {IUser, TUserRole} from "./../types"
 import {USER_QUERIES} from "./../services"
 import { Connection } from 'promise-mysql';
 
@@ -12,17 +12,16 @@ const checkRole = (role: TUserRole[]): role is TUserRole[] => {
 
 export const UserController = {
   CREATE_USER: async (req: Request, res: Response) => {
-    const request: PreConfiguredRequest = req as PreConfiguredRequest
-
     try {
-      const connection: Connection = request._config_._connection_
+      const connection: Connection = req._config_.connection as Connection
+      
       const {
         roles, firstname, lastname,
         address, mobile_number, email,
         password
       }: IUser = req.body
 
-      const transformedRoles = roles.map((item: TUserRole): TUserRole => item.toLocaleLowerCase() as TUserRole)
+      const transformedRoles: TUserRole[] = JSON.parse(roles).map((item: TUserRole): TUserRole => item.toLocaleLowerCase() as TUserRole)
 
       /** Check role */
       if (!transformedRoles.length) throw new ErrorException("User role should not be null.")

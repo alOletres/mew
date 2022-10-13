@@ -3,7 +3,7 @@ import {sign, SignOptions} from "jsonwebtoken"
 import { ErrorException } from './errors';
 import {AUTH_QUERIES} from "./../services"
 import { Connection } from "promise-mysql";
-import {hashSync} from "bcrypt"
+import {hashSync, compareSync} from "bcrypt"
 
 export const generateToken = (
   type: "access" | "refresh",
@@ -44,9 +44,16 @@ export const hashPassword = (password: string) => {
   try {
     if (!SALTROUNDS) throw new ErrorException("Salt round is not set.")
     if (!password) throw new ErrorException("Password is required.")
-
-    return hashSync(password, SALTROUNDS)
+    
+    return hashSync(password, parseInt(SALTROUNDS))
   } catch (err) {
     throw err
   }
+}
+
+export const comparePassword = (
+  password: string,
+  hashedPassword: string
+): boolean | undefined => {
+  return compareSync(password, hashedPassword)
 }

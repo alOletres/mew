@@ -2,7 +2,7 @@ export type TUserRole = "admin" | "customer" | "staff"
 
 export interface IUser {
   id?: number;
-  roles: TUserRole[];
+  roles: string;
   firstname: string;
   lastname: string;
   address: string;

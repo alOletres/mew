@@ -1,4 +1,4 @@
 import {ErrorException, catchError} from "./errors"
-import {hashPassword} from "./methods"
+import {hashPassword, comparePassword, generateToken} from "./methods"
 
-export {ErrorException, catchError, hashPassword}
+export {ErrorException, catchError, hashPassword, comparePassword, generateToken}

@@ -22,7 +22,7 @@ export const CottageController = {
        * Step 1: Collect individual cottage record
        * for database record keeping
        */
-      const transformedArray = cottages.map((cottage: ICottage<TCottageType>): ICottage<TCottageType> => {
+      cottages.map((cottage: ICottage<TCottageType>): ICottage<TCottageType> => {
         return {
           type,
           description: cottage.description,
