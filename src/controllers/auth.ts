@@ -10,5 +10,14 @@ export const AuthController = {
 
       catchError(error, res)
     }
+  },
+  REFRESH_TOKEN: async (req: Request, res: Response) => {
+    try {
+      
+    } catch (err) {
+      const error: ErrorException = err as ErrorException
+
+      catchError(error, res)
+    }
   }
 }
