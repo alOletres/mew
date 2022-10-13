@@ -1,3 +1,8 @@
+const timestampColumns = {
+  createdAt: "createdAt",
+  updatedAt: "updatedAt"
+}
+
 export const DB_COLUMNS = {
   BOOKINGS: {
     id: "id",
@@ -8,7 +13,18 @@ export const DB_COLUMNS = {
     payment_type: "payment_type",
     booker: "booker",
     receipt: "receipt",
-    createdAt: "createdAt",
-    updatedAt: "updatedAt"
+    ...timestampColumns
+  },
+  USER: {
+    id: "id",
+    role: "role",
+    firstname: "firstname",
+    lastname: "lastname",
+    address: "address",
+    mobile_number: "mobile_number",
+    email: "email",
+    password: "password",
+    refresh_token: "refresh_token",
+    ...timestampColumns
   }
 }

@@ -1,7 +1,9 @@
-import { PORT } from "./secrets"
+import {PORT, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET} from "./secrets"
 import DATABASE_CONNECT from "./db"
 
 export {
   PORT,
-  DATABASE_CONNECT
+  DATABASE_CONNECT,
+  ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET
 }
