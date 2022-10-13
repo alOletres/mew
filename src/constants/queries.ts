@@ -12,7 +12,13 @@ const {
   },
   USER: {
     refresh_token,
-    email
+    email,
+    role,
+    firstname,
+    lastname,
+    address,
+    mobile_number,
+    password
   }
 } = DB_COLUMNS
 
@@ -26,5 +32,10 @@ export const COMMON_QUERIES = {
     SELECT ${refresh_token} 
     from ${DB_TABLES.USERS}
     WHERE ${email}=?
+  `,
+  CREATE_USER: `
+    INSERT INTO ${DB_TABLES.USERS}
+    (${role}, ${firstname}, ${lastname}, ${address}, ${mobile_number}, ${email}, ${password})
+    VALUES(?, ?, ?, ?, ?, ?, ?)
   `
 }

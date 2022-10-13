@@ -1,8 +1,9 @@
-import {ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET} from "./../configs"
-import {sign, verify, SignOptions} from "jsonwebtoken"
+import {ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, SALTROUNDS} from "./../configs"
+import {sign, SignOptions} from "jsonwebtoken"
 import { ErrorException } from './errors';
 import {AUTH_QUERIES} from "./../services"
 import { Connection } from "promise-mysql";
+import {hashSync} from "bcrypt"
 
 export const generateToken = (
   type: "access" | "refresh",
@@ -34,6 +35,17 @@ export const verifyToken = async (
     const isExisting = await AUTH_QUERIES.VERIFY_TOKEN(connection, email)
 
     if (!isExisting || !isExisting.values?.length) throw new ErrorException("User is logged out.")
+  } catch (err) {
+    throw err
+  }
+}
+
+export const hashPassword = (password: string) => {
+  try {
+    if (!SALTROUNDS) throw new ErrorException("Salt round is not set.")
+    if (!password) throw new ErrorException("Password is required.")
+
+    return hashSync(password, SALTROUNDS)
   } catch (err) {
     throw err
   }
