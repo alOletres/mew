@@ -31,7 +31,7 @@ export const COMMON_QUERIES = {
   GET_REFRESH_TOKEN: `
     SELECT ${refresh_token} 
     from ${DB_TABLES.USERS}
-    WHERE ${email}=?
+    WHERE ${refresh_token}=?
   `,
   CREATE_USER: `
     INSERT INTO ${DB_TABLES.USERS}

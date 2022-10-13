@@ -1,7 +1,7 @@
 import {Request, Response} from "express"
 import {Connection} from "promise-mysql"
-import {ErrorException, catchError, validateToken, generateToken} from "./../utils";
-import {ILogin, IRequestRefreshToken} from "./../types"
+import {ErrorException, catchError, validateToken, generateToken, decodeToken} from "./../utils";
+import {ILogin, IRequestFreshToken, IDecodedToken} from "./../types"
 import {AUTH_QUERIES} from "./../services"
 import {COMMON_QUERIES, TOKEN_EXPIRY} from "./../constants"
 
@@ -38,20 +38,21 @@ export const AuthController = {
 
     try {
       const {
-        email,
         token
-      }: IRequestRefreshToken = req.body
+      }: IRequestFreshToken = req.body
 
-      if (!email || !token) throw new ErrorException("Email and refresh token is required.")
+      if (!token) throw new ErrorException("Email and refresh token is required.")
 
-      const validate = await validateToken(token, email, connection)
+      const validate = await validateToken(token, connection)
 
       if (!validate) throw new ErrorException("Email provided is invalid.")
 
       /**
        * 
-       * Since refresh token is valid, create a fresh token
+       * Since refresh token is valid, decode the token
        */
+      const {email}: IDecodedToken = decodeToken(token) as IDecodedToken
+      
       const tokenPayload = {
         email,
         createdAt: Date.now()

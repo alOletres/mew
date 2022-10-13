@@ -1,5 +1,5 @@
 import {ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, SALTROUNDS} from "./../configs"
-import {sign, SignOptions} from "jsonwebtoken"
+import {sign, SignOptions, verify} from "jsonwebtoken"
 import { ErrorException } from './errors';
 import {AUTH_QUERIES} from "./../services"
 import { Connection } from "promise-mysql";
@@ -27,13 +27,22 @@ export const generateToken = (
   }
 }
 
+export const decodeToken = (token: string) => {
+  try {
+    if (!REFRESH_TOKEN_SECRET) throw new ErrorException("Refresh token secret is undefined.")
+
+    return verify(token, REFRESH_TOKEN_SECRET)
+  } catch (err) {
+    throw err
+  }
+}
+
 export const validateToken = async (
   token: string,
-  email: string,
   connection: Connection
 ): Promise<boolean> => {
   try {
-    const refreshToken = await AUTH_QUERIES.GET_REFRESH_TOKEN(connection, email)
+    const refreshToken = await AUTH_QUERIES.GET_REFRESH_TOKEN(connection, token)
 
     if (!refreshToken) throw new ErrorException("User is logged out.")
 

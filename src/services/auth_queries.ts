@@ -50,15 +50,15 @@ export const AUTH_QUERIES = {
   },
   GET_REFRESH_TOKEN: async (
     connection: Connection,
-    email: string
+    token: string
   ): Promise<string> => {
     try {
       if (!connection) throw new ErrorException("Unable to connect to database.")
 
       connection.beginTransaction()
-      const response = await connection.query(COMMON_QUERIES.GET_REFRESH_TOKEN, [email])
+      const response = await connection.query(COMMON_QUERIES.GET_REFRESH_TOKEN, [token])
       connection.commit()
-
+      
       if (!response.length) throw new ErrorException("Account not found.", 403)
       if (response.length && !response[0]["refresh_token"]) throw new ErrorException("User is currently logged out, please login to continue.", 403)
 
