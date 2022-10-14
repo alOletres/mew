@@ -1,7 +1,7 @@
 import {Connection} from "promise-mysql"
-import {ErrorException, comparePassword, generateToken} from "./../utils"
+import {ErrorException, comparePassword, generateToken, returnError} from "./../utils"
 import {COMMON_QUERIES, TOKEN_EXPIRY} from "../constants"
-import {ILogin} from "./../types"
+import {IError, ILogin} from "./../types"
 
 export const AUTH_QUERIES = {
   LOGIN: async (
@@ -45,27 +45,23 @@ export const AUTH_QUERIES = {
 
       return null
     } catch (err) {
-      throw err
+      return returnError(connection, err)
     }
   },
   GET_REFRESH_TOKEN: async (
     connection: Connection,
     token: string
-  ): Promise<string> => {
+  ): Promise<string | IError> => {
     try {
       if (!connection) throw new ErrorException("Unable to connect to database.")
 
-      connection.beginTransaction()
       const response = await connection.query(COMMON_QUERIES.GET_REFRESH_TOKEN, [token])
-      connection.commit()
       
-      if (!response.length) throw new ErrorException("Account not found.", 403)
-      if (response.length && !response[0]["refresh_token"]) throw new ErrorException("User is currently logged out, please login to continue.", 403)
+      if (!response.length || (response.length && !response[0]["refresh_token"])) throw new ErrorException("User is currently logged out, please login to continue.", 403)
 
       return response[0]["refresh_token"]
     } catch (err) {
-      connection.rollback()
-      throw err
+      return returnError(connection, err)
     }
   }
 }

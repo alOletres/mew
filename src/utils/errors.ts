@@ -1,4 +1,6 @@
 import {Response} from "express"
+import {Connection} from "promise-mysql"
+import {IError} from "./../types"
 
 export class ErrorException extends Error {
   message: string = ''
@@ -20,4 +22,21 @@ export const catchError = (err: ErrorException, res: Response) => {
     code: err.code,
     data: err.data
   })
+}
+
+export const isError = (response: any): response is IError => {
+  return "error" in response
+}
+
+export const returnError = (
+  connection: Connection,
+  err: unknown
+): IError => {
+  const error: Error = err as Error
+
+  connection.rollback()
+  return {
+    error: true,
+    message: error.message
+  }
 }

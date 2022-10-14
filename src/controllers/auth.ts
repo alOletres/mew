@@ -61,6 +61,7 @@ export const AuthController = {
       const accessToken: string = generateToken("access", tokenPayload)
       const refreshToken: string = generateToken("refresh", tokenPayload)
 
+      /** Persist the refresh token so we can use it next time */
       await connection.query(COMMON_QUERIES.SET_REFRESH_TOKEN, [refreshToken, email])
 
       res.status(200).send({

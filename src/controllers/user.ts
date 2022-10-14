@@ -1,5 +1,5 @@
 import {Request, Response} from "express"
-import {ErrorException, catchError, hashPassword} from "./../utils"
+import {ErrorException, catchError, hashPassword, isError} from "./../utils"
 import {IUser, TUserRole} from "./../types"
 import {USER_QUERIES} from "./../services"
 import { Connection } from 'promise-mysql';
@@ -31,10 +31,12 @@ export const UserController = {
       const hashedPassword: string = hashPassword(password)
 
       /** Step 2: save data to database */
-      await USER_QUERIES.CREATE_USER(connection, {
+      const createUserResponse = await USER_QUERIES.CREATE_USER(connection, {
         roles, firstname, lastname, address,
         mobile_number, email, password: hashedPassword
       })
+
+      if (isError(createUserResponse)) throw new ErrorException(createUserResponse.message ?? "Something went wrong, please check your data.")
 
       res.status(200).send({
         message: "User is successfully created!"

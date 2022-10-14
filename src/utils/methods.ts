@@ -1,8 +1,8 @@
 import {ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, SALTROUNDS} from "./../configs"
 import {sign, SignOptions, verify} from "jsonwebtoken"
-import { ErrorException } from './errors';
+import {ErrorException} from './errors';
 import {AUTH_QUERIES} from "./../services"
-import { Connection } from "promise-mysql";
+import {Connection} from "promise-mysql";
 import {hashSync, compareSync} from "bcrypt"
 import {TOKEN_EXPIRY} from "./../constants"
 

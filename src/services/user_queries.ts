@@ -1,7 +1,8 @@
 import {Connection, Query} from "promise-mysql"
 import {ErrorException} from "./../utils"
 import {COMMON_QUERIES} from "../constants"
-import {IUser} from "./../types"
+import {IUser, IError} from "./../types"
+import {returnError} from "./../utils"
 
 export const USER_QUERIES = {
   CREATE_USER: async (
@@ -10,7 +11,7 @@ export const USER_QUERIES = {
       roles, firstname, lastname,
       address, mobile_number, email, password
     }: IUser
-  ): Promise<Query<any>> => {
+  ): Promise<Query<any> | IError> => {
     try {
       if (!connection) throw new ErrorException("Unable to connect to database.")
 
@@ -25,8 +26,7 @@ export const USER_QUERIES = {
 
       return response
     } catch (err) {
-      connection.rollback()
-      throw err
+      return returnError(connection, err)
     }
   }
 }
