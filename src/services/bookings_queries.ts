@@ -1,7 +1,7 @@
 import {Connection} from "promise-mysql"
 import {IBooking} from "../types"
 import {ErrorException, returnError} from "../utils"
-import {COMMON_QUERIES} from "../constants"
+import {PRESET_QUERIES} from "../constants"
 
 export const BOOKING_QUERIES = {
   CREATE_BOOKINGS: async (
@@ -19,7 +19,7 @@ export const BOOKING_QUERIES = {
         details.payment_receipt
       ]
 
-      const query = await connection.query(COMMON_QUERIES.CREATE_BOOKING, [...values])
+      const query = await connection.query(PRESET_QUERIES.CREATE_BOOKING, [...values])
 
       return query
     } catch (err) {

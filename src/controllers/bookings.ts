@@ -3,6 +3,7 @@ import {ErrorException, catchError} from "./../utils"
 import {IBooking} from "./../types"
 import {DATABASE_CONNECT} from "./../configs"
 import {BOOKING_QUERIES} from "./../services"
+import {EHttpStatusCode} from "./../constants"
 
 export const BookingsController = {
   book: async (req: Request, res: Response) => {
@@ -15,7 +16,7 @@ export const BookingsController = {
         details.map((detail: IBooking) => BOOKING_QUERIES.CREATE_BOOKINGS(connection, detail))
       )
 
-      res.status(200).send({
+      res.status(EHttpStatusCode.OK).send({
         message: "Your reservation is successfully created.",
         data: response
       })

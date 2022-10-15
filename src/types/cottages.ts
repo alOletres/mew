@@ -2,27 +2,23 @@
  * 
  * Static cottage types
  */
-export type TCottageType = "Floating" | "Non-Floating"
+export type TCottageType = "floating" | "non-floating"
 
 /**
  * 
  * Object model for database cottage table
  */
-export interface ICottage<T> {
+export interface ICottage {
   id?: number;
-  readonly type: T extends TCottageType ? T : never;
+  type: TCottageType;
   description: string;
   price: number;
-  is_available?: boolean;
+  is_available?: boolean | number | string;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-/**
- * 
- * Payload type for adding a cottage
- */
-export interface ICottagePayload<T = TCottageType> {
-  type: T;
-  cottages: T extends TCottageType ? ICottage<T>[] : never;
+export type TParamFilter = TCottageType & "all"
+export interface IFilterBy {
+  status?: boolean | string;
 }

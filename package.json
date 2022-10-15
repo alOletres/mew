@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development npx nodemon ./src/index.ts",
+    "start:offline": "npm run build && cross-env NODE_ENV=development node ./dist/index.js",
     "tunnel": "lt --host --port 3000 --subdomain resortserver",
     "build": "tsc"
   },

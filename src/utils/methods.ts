@@ -4,7 +4,7 @@ import {ErrorException} from './errors';
 import {AUTH_QUERIES} from "./../services"
 import {Connection} from "promise-mysql";
 import {hashSync, compareSync} from "bcrypt"
-import {TOKEN_EXPIRY} from "./../constants"
+import {TOKEN_EXPIRY, EHttpStatusCode} from "./../constants"
 
 export const generateToken = (
   type: "access" | "refresh",
@@ -27,11 +27,18 @@ export const generateToken = (
   }
 }
 
-export const decodeToken = (token: string) => {
+export const decodeToken = (
+  token: string, 
+  tokenType: "access" | "refresh"
+) => {
   try {
-    if (!REFRESH_TOKEN_SECRET) throw new ErrorException("Refresh token secret is undefined.")
+    const secret: string | undefined = tokenType === "access"
+      ? ACCESS_TOKEN_SECRET
+      : REFRESH_TOKEN_SECRET
+    
+    if (!secret) throw new ErrorException("Token secret is not defined.")
 
-    return verify(token, REFRESH_TOKEN_SECRET)
+    return verify(token, secret)
   } catch (err) {
     throw err
   }
@@ -46,7 +53,7 @@ export const validateToken = async (
 
     if (!refreshToken) throw new ErrorException("User is logged out.")
 
-    if (refreshToken !== token) throw new ErrorException("Refresh token provided is invalid.", 403)
+    if (refreshToken !== token) throw new ErrorException("Refresh token provided is invalid.", EHttpStatusCode.FORBIDDEN)
 
     return true
   } catch (err) {

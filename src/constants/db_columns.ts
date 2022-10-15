@@ -26,5 +26,13 @@ export const DB_COLUMNS = {
     password: "password",
     refresh_token: "refresh_token",
     ...timestampColumns
+  },
+  COTTAGE: {
+    id: "id",
+    type: "type",
+    description: "description",
+    price: "price",
+    is_available: "is_available",
+    ...timestampColumns
   }
 }

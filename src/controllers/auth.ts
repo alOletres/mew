@@ -3,7 +3,7 @@ import {Connection} from "promise-mysql"
 import {ErrorException, catchError, validateToken, generateToken, decodeToken} from "./../utils";
 import {ILogin, IRequestFreshToken, IDecodedToken} from "./../types"
 import {AUTH_QUERIES} from "./../services"
-import {COMMON_QUERIES, TOKEN_EXPIRY} from "./../constants"
+import {PRESET_QUERIES, TOKEN_EXPIRY, EHttpStatusCode} from "./../constants"
 
 export const AuthController = {
   LOGIN: async (req: Request, res: Response) => {
@@ -20,9 +20,9 @@ export const AuthController = {
       const loginResponse: object | null = await AUTH_QUERIES.LOGIN(connection, {email, password})
       connection.commit()
 
-      if (!loginResponse) throw new ErrorException("Account does not exist.", 403)
+      if (!loginResponse) throw new ErrorException("Username or password is incorrect.", EHttpStatusCode.FORBIDDEN)
 
-      res.status(200).send({
+      res.status(EHttpStatusCode.OK).send({
         message: "You are successfully logged in.",
         data: loginResponse
       })
@@ -51,7 +51,7 @@ export const AuthController = {
        * 
        * Since refresh token is valid, decode the token
        */
-      const {email}: IDecodedToken = decodeToken(token) as IDecodedToken
+      const {email}: IDecodedToken = decodeToken(token, "refresh") as IDecodedToken
       
       const tokenPayload = {
         email,
@@ -62,9 +62,9 @@ export const AuthController = {
       const refreshToken: string = generateToken("refresh", tokenPayload)
 
       /** Persist the refresh token so we can use it next time */
-      await connection.query(COMMON_QUERIES.SET_REFRESH_TOKEN, [refreshToken, email])
+      await connection.query(PRESET_QUERIES.SET_REFRESH_TOKEN, [refreshToken, email])
 
-      res.status(200).send({
+      res.status(EHttpStatusCode.OK).send({
         message: "Token successfully generated.",
         data: {
           accessToken, refreshToken,

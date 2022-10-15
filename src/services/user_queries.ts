@@ -1,6 +1,6 @@
 import {Connection, Query} from "promise-mysql"
 import {ErrorException} from "./../utils"
-import {COMMON_QUERIES} from "../constants"
+import {PRESET_QUERIES} from "../constants"
 import {IUser, IError} from "./../types"
 import {returnError} from "./../utils"
 
@@ -18,7 +18,7 @@ export const USER_QUERIES = {
       connection.beginTransaction()
 
       const response = await connection.query(
-        COMMON_QUERIES.CREATE_USER, 
+        PRESET_QUERIES.CREATE_USER, 
         [roles, firstname, lastname, address, mobile_number, email, password]
       )
       

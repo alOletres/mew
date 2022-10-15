@@ -2,7 +2,8 @@ import {Request, Response} from "express"
 import {ErrorException, catchError, hashPassword, isError} from "./../utils"
 import {IUser, TUserRole} from "./../types"
 import {USER_QUERIES} from "./../services"
-import { Connection } from 'promise-mysql';
+import {Connection} from 'promise-mysql';
+import {EHttpStatusCode} from "./../constants"
 
 const checkRole = (role: TUserRole[]): role is TUserRole[] => {
   return !role.includes("admin") 
@@ -38,7 +39,7 @@ export const UserController = {
 
       if (isError(createUserResponse)) throw new ErrorException(createUserResponse.message ?? "Something went wrong, please check your data.")
 
-      res.status(200).send({
+      res.status(EHttpStatusCode.OK).send({
         message: "User is successfully created!"
       })
     } catch (err) {

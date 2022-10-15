@@ -1,6 +1,6 @@
 import {Connection} from "promise-mysql"
 import {ErrorException, comparePassword, generateToken, returnError} from "./../utils"
-import {COMMON_QUERIES, TOKEN_EXPIRY} from "../constants"
+import {PRESET_QUERIES, TOKEN_EXPIRY, EHttpStatusCode} from "../constants"
 import {IError, ILogin} from "./../types"
 
 export const AUTH_QUERIES = {
@@ -9,7 +9,7 @@ export const AUTH_QUERIES = {
     {email, password}: ILogin
   ): Promise<object | null> => {
     try {
-      const checkAccount = await connection.query(COMMON_QUERIES.LOGIN, [email])
+      const checkAccount = await connection.query(PRESET_QUERIES.LOGIN, [email])
 
       if (!checkAccount.length) throw new ErrorException("Account does not exist.")
 
@@ -34,7 +34,7 @@ export const AUTH_QUERIES = {
          * 
          * Set this user's refresh token
          */
-        await connection.query(COMMON_QUERIES.SET_REFRESH_TOKEN, [refreshToken, email])
+        await connection.query(PRESET_QUERIES.SET_REFRESH_TOKEN, [refreshToken, email])
 
         return {
           accessToken, 
@@ -55,9 +55,9 @@ export const AUTH_QUERIES = {
     try {
       if (!connection) throw new ErrorException("Unable to connect to database.")
 
-      const response = await connection.query(COMMON_QUERIES.GET_REFRESH_TOKEN, [token])
+      const response = await connection.query(PRESET_QUERIES.GET_REFRESH_TOKEN, [token])
       
-      if (!response.length || (response.length && !response[0]["refresh_token"])) throw new ErrorException("User is currently logged out, please login to continue.", 403)
+      if (!response.length || (response.length && !response[0]["refresh_token"])) throw new ErrorException("User is currently logged out, please login to continue.", EHttpStatusCode.FORBIDDEN)
 
       return response[0]["refresh_token"]
     } catch (err) {

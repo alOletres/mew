@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction} from "express"
 import {DATABASE_CONNECT} from "./../configs"
 import {Connection} from "promise-mysql"
+import {EHttpStatusCode} from "./../constants"
 
 export const databaseConnect = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -13,6 +14,6 @@ export const databaseConnect = async (req: Request, res: Response, next: NextFun
     req._config_.connection = connection
     next()
   } catch (err) {
-    res.sendStatus(500)
+    res.sendStatus(EHttpStatusCode.INTERNAL_SERVER_ERROR)
   }
 }

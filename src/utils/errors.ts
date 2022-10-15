@@ -1,13 +1,18 @@
 import {Response} from "express"
 import {Connection} from "promise-mysql"
 import {IError} from "./../types"
+import {EHttpStatusCode} from "./../constants"
 
 export class ErrorException extends Error {
   message: string = ''
   code: number = 0
   data: object | undefined = undefined
   
-  constructor(message: string, code: number = 500, data?: object) {
+  constructor(
+    message: string, 
+    code: number = EHttpStatusCode.FORBIDDEN, 
+    data?: object
+  ) {
     super()
 
     this.message = message
