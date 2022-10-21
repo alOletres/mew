@@ -33,6 +33,7 @@ export const DB_COLUMNS = {
     description: "description",
     price: "price",
     is_available: "is_available",
+    images: "images",
     ...timestampColumns
   }
 }

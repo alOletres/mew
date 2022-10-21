@@ -13,15 +13,15 @@ const {
   },
   COTTAGE: {
     type, description, 
-    price, is_available
+    price, is_available, images
   }
 } = DB_COLUMNS
 
 export const PRESET_QUERIES = {
   CREATE_COTTAGE: `
     INSERT INTO ${DB_TABLES.COTTAGES}
-    (${type}, ${description}, ${price}, ${is_available})
-    VALUES (?, ?, ?, ?)
+    (${type}, ${description}, ${price}, ${is_available}, ${images})
+    VALUES (?, ?, ?, ?, ?)
   `,
   CREATE_BOOKING: `
     INSERT INTO ${DB_TABLES.BOOKINGS}

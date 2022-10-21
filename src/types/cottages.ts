@@ -14,6 +14,7 @@ export interface ICottage {
   description: string;
   price: number;
   is_available?: boolean | number | string;
+  images?: string | string[];
   createdAt?: Date;
   updatedAt?: Date;
 }

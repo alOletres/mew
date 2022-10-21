@@ -1,11 +1,11 @@
 import {ErrorException, catchError, returnError, isError} from "./errors"
 import {
   hashPassword, comparePassword, generateToken, 
-  validateToken, decodeToken
+  validateToken, decodeToken, readFile
 } from './methods';
 
 export {
   ErrorException, catchError, hashPassword, 
   comparePassword, generateToken, validateToken,
-  decodeToken, isError, returnError
+  decodeToken, isError, returnError, readFile
 }

@@ -14,10 +14,11 @@ export const CREATE_COTTAGE = async (
 	try {
 		const {
 			type, description,
-			price, is_available
+			price, is_available,
+			images
 		}: ICottage = cottage
 
-		const response = await connection.query(PRESET_QUERIES.CREATE_COTTAGE, [type, description, price, is_available])
+		const response = await connection.query(PRESET_QUERIES.CREATE_COTTAGE, [type, description, price, is_available, images])
 
 		return response
 	} catch (err) {

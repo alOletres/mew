@@ -5,6 +5,21 @@ import {AUTH_QUERIES} from "./../services"
 import {Connection} from "promise-mysql";
 import {hashSync, compareSync} from "bcrypt"
 import {TOKEN_EXPIRY, EHttpStatusCode} from "./../constants"
+import fs from "fs"
+
+const reader = fs.promises
+
+export const readFile = async (filePath: string) => {
+  try {
+    const data = await reader.readFile(filePath)
+    
+    if (!data) throw new Error("File not found.")
+
+    return data
+  } catch (err) {
+    throw err
+  }
+}
 
 export const generateToken = (
   type: "access" | "refresh",
