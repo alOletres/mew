@@ -53,3 +53,22 @@ export const COTTAGE_LIST = async (
 		return returnError(connection, err)
 	}
 }
+
+export const EDIT_COTTAGE = async (
+	connection: Connection,
+	cottage: ICottage
+): Promise<any | IError> => {
+	try {
+		const {
+			type, description,
+			price, is_available,
+			images, id
+		}: ICottage = cottage
+
+		await connection.query(PRESET_QUERIES.UPDATE_COTTAGE, [type, description, price, is_available, images, id])
+
+		return
+	} catch (err) {
+		return returnError(connection, err)
+	}
+}

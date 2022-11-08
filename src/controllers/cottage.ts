@@ -1,9 +1,13 @@
 import {Request, Response} from "express"
 import {ErrorException, catchError, isError, readFile} from "./../utils"
 import {ICottage, IFilterBy, TCottageType, TParamFilter} from "./../types"
-import {CREATE_COTTAGE, COTTAGE_LIST} from "./../services"
+import {CREATE_COTTAGE, COTTAGE_LIST, EDIT_COTTAGE} from "./../services"
 import {Connection} from "promise-mysql"
 import {EHttpStatusCode} from './../constants';
+
+const checkType = (typeValue: string): typeValue is TCottageType => {
+  return typeValue.toLowerCase() === "floating" || typeValue.toLowerCase() === "non-floating"
+}
 
 export const CottageController = {
   ADD_COTTAGE: async (req: Request, res: Response) => {
@@ -19,10 +23,6 @@ export const CottageController = {
 
       const uploadedFiles: any[] = req.files as unknown as any[]
       const files: string[] = uploadedFiles.map((item: any) => item.path)
-
-      const checkType = (typeValue: string): typeValue is TCottageType => {
-        return typeValue.toLowerCase() === "floating" || typeValue.toLowerCase() === "non-floating"
-      }
 
       if (!checkType(type)) throw new ErrorException("Cottage type should either be floating or non-floating.", EHttpStatusCode.INTERNAL_SERVER_ERROR)
       if (!description) throw new ErrorException("Cottage should have a description.", EHttpStatusCode.INTERNAL_SERVER_ERROR)
@@ -89,20 +89,32 @@ export const CottageController = {
   },
   EDIT_COTTAGE: async (req: Request, res: Response) => {
     try {
-      // const connection: Connection = req._config_.connection as Connection
-      // const cottageId: number = req.params?.id as unknown as number
+      const connection: Connection = req._config_.connection as Connection
+      const cottageId: number = req.params?.id as unknown as number
 
-      // if (!cottageId) throw new ErrorException("Cottage id must be provided in the request parameters.")
+      if (!cottageId) throw new ErrorException("Cottage id must be provided in the request parameters.")
 
-      // const {
-      //   type,
-      //   description,
-      //   price,
-      //   is_available
-      // }: ICottage = req.body
+      const {
+        type,
+        description,
+        price,
+        is_available
+      }: ICottage = req.body
 
-      // const uploadedFiles: any[] = req.files as unknown as any[]
-      // const files: string[] = uploadedFiles.map((item: any) => item.path)
+      if (!checkType(type)) throw new ErrorException("Cottage type should either be floating or non-floating.", EHttpStatusCode.INTERNAL_SERVER_ERROR)
+      if (!description) throw new ErrorException("Cottage should have a description.", EHttpStatusCode.INTERNAL_SERVER_ERROR)
+
+      const uploadedFiles: any[] = req.files as unknown as any[]
+      const files: string[] = uploadedFiles.map((item: any) => item.path)
+
+      await EDIT_COTTAGE(connection, {
+        type, description, price, is_available,
+        images: JSON.stringify(files), id: cottageId
+      })
+
+      res.status(EHttpStatusCode.OK).send({
+        message: "Cottage is successfully updated."
+      })
     } catch (err) {
       const error: ErrorException = err as ErrorException
 

@@ -61,7 +61,7 @@ export const PRESET_QUERIES = {
   `,
   UPDATE_COTTAGE: `
     UPDATE ${DB_TABLES.COTTAGES}
-    SET ${type}=?, ${description}=?, ${is_available}=?, ${images}=?
+    SET ${type}=?, ${description}=?, ${price}=? ${is_available}=?, ${images}=?
     WHERE ${DB_COLUMNS.COTTAGE.id}=?
   `
 }
