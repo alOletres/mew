@@ -15,4 +15,10 @@ router.post("/", CottageController.ADD_COTTAGE)
  */
 router.get("/list/:type", CottageController.COTTAGE_LIST)
 
+/**
+ * 
+ * Update a Specific Cottage
+ */
+router.put("/edit/:id", CottageController.EDIT_COTTAGE)
+
 export default router

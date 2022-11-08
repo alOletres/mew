@@ -58,5 +58,10 @@ export const PRESET_QUERIES = {
     UPDATE ${DB_TABLES.USERS}
     SET ${refresh_token}=?
     WHERE ${email}=?
+  `,
+  UPDATE_COTTAGE: `
+    UPDATE ${DB_TABLES.COTTAGES}
+    SET ${type}=?, ${description}=?, ${is_available}=?, ${images}=?
+    WHERE ${DB_COLUMNS.COTTAGE.id}=?
   `
 }

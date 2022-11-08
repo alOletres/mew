@@ -86,5 +86,27 @@ export const CottageController = {
 
       catchError(error, res)
     }
+  },
+  EDIT_COTTAGE: async (req: Request, res: Response) => {
+    try {
+      // const connection: Connection = req._config_.connection as Connection
+      // const cottageId: number = req.params?.id as unknown as number
+
+      // if (!cottageId) throw new ErrorException("Cottage id must be provided in the request parameters.")
+
+      // const {
+      //   type,
+      //   description,
+      //   price,
+      //   is_available
+      // }: ICottage = req.body
+
+      // const uploadedFiles: any[] = req.files as unknown as any[]
+      // const files: string[] = uploadedFiles.map((item: any) => item.path)
+    } catch (err) {
+      const error: ErrorException = err as ErrorException
+
+      catchError(error, res)
+    }
   }
 }
