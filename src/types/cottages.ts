@@ -11,6 +11,8 @@ export type TCottageType = "floating" | "non-floating"
 export interface ICottage {
   id?: number;
   type: TCottageType;
+  cottageNumber: string;
+  capacity: string;
   description: string;
   price: number;
   is_available?: boolean | number | string;

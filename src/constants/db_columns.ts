@@ -30,7 +30,9 @@ export const DB_COLUMNS = {
   COTTAGE: {
     id: "id",
     type: "type",
+    cottage_number: "cottage_number",
     description: "description",
+    capacity: "capacity",
     price: "price",
     is_available: "is_available",
     images: "images",

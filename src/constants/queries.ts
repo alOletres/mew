@@ -13,15 +13,16 @@ const {
   },
   COTTAGE: {
     type, description, 
-    price, is_available, images
+    price, is_available, images,
+    cottage_number, capacity
   }
 } = DB_COLUMNS
 
 export const PRESET_QUERIES = {
   CREATE_COTTAGE: `
     INSERT INTO ${DB_TABLES.COTTAGES}
-    (${type}, ${description}, ${price}, ${is_available}, ${images})
-    VALUES (?, ?, ?, ?, ?)
+    (${type}, ${cottage_number}, ${description}, ${capacity}, ${price}, ${is_available}, ${images})
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `,
   CREATE_BOOKING: `
     INSERT INTO ${DB_TABLES.BOOKINGS}
@@ -61,7 +62,7 @@ export const PRESET_QUERIES = {
   `,
   UPDATE_COTTAGE: `
     UPDATE ${DB_TABLES.COTTAGES}
-    SET ${type}=?, ${description}=?, ${price}=? ${is_available}=?, ${images}=?
+    SET ${type}=?, ${cottage_number}=?, ${description}=?, ${capacity}=? ${price}=? ${is_available}=?, ${images}=?
     WHERE ${DB_COLUMNS.COTTAGE.id}=?
   `
 }

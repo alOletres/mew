@@ -15,10 +15,11 @@ export const CREATE_COTTAGE = async (
 		const {
 			type, description,
 			price, is_available,
-			images
+			images, capacity,
+			cottageNumber
 		}: ICottage = cottage
 
-		const response = await connection.query(PRESET_QUERIES.CREATE_COTTAGE, [type, description, price, is_available, images])
+		const response = await connection.query(PRESET_QUERIES.CREATE_COTTAGE, [type, cottageNumber, description, capacity, price, is_available, images])
 
 		return response
 	} catch (err) {
@@ -62,10 +63,11 @@ export const EDIT_COTTAGE = async (
 		const {
 			type, description,
 			price, is_available,
-			images, id
+			images, id,
+			cottageNumber, capacity
 		}: ICottage = cottage
 
-		await connection.query(PRESET_QUERIES.UPDATE_COTTAGE, [type, description, price, is_available, images, id])
+		await connection.query(PRESET_QUERIES.UPDATE_COTTAGE, [type, cottageNumber, description, capacity, price, is_available, images, id])
 
 		return
 	} catch (err) {
