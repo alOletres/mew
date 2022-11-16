@@ -51,10 +51,14 @@ export const AuthController = {
        * 
        * Since refresh token is valid, decode the token
        */
-      const {email}: IDecodedToken = decodeToken(token, "refresh") as IDecodedToken
+      const {
+        id, email, firstname,
+        lastname, mobile_number, role
+      }: IDecodedToken = decodeToken(token, "refresh") as IDecodedToken
       
       const tokenPayload = {
-        email,
+        id, email, firstname,
+        lastname, mobile_number, role,
         createdAt: Date.now()
       }
 

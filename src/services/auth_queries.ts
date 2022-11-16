@@ -1,7 +1,7 @@
 import {Connection} from "promise-mysql"
 import {ErrorException, comparePassword, generateToken, returnError} from "./../utils"
 import {PRESET_QUERIES, TOKEN_EXPIRY, EHttpStatusCode} from "../constants"
-import {IError, ILogin} from "./../types"
+import {IError, ILogin, IDecodedToken} from "./../types"
 
 export const AUTH_QUERIES = {
   LOGIN: async (
@@ -9,11 +9,17 @@ export const AUTH_QUERIES = {
     {email, password}: ILogin
   ): Promise<object | null> => {
     try {
-      const checkAccount = await connection.query(PRESET_QUERIES.LOGIN, [email])
+      const checkAccount: IDecodedToken[] = await connection.query(PRESET_QUERIES.LOGIN, [email])
 
       if (!checkAccount.length) throw new ErrorException("Account does not exist.")
 
-      const hashedPassword: string = checkAccount[0]["password"]
+      const {
+        password: hashedPassword,
+        id, firstname, lastname,
+        role, mobile_number
+      }: IDecodedToken = checkAccount[0]
+
+      if (!hashedPassword) throw new ErrorException("Password not found from the database.")
 
       const isCorrect: boolean | undefined= comparePassword(password, hashedPassword)
 
@@ -23,7 +29,8 @@ export const AUTH_QUERIES = {
        */
       if (isCorrect) {
         const tokenPayload = {
-          email,
+          id, firstname, lastname,
+          role, mobile_number, email,
           createdAt: Date.now()
         }
 

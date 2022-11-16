@@ -9,7 +9,8 @@ const {
   USER: {
     refresh_token, email, role,
     firstname, lastname, address,
-    mobile_number, password
+    mobile_number, password,
+    id: userId
   },
   COTTAGE: {
     type, description, 
@@ -51,7 +52,7 @@ export const PRESET_QUERIES = {
     WHERE ${is_available}=? AND ${type}=?
   `,
   LOGIN: `
-    SELECT ${password}
+    SELECT ${userId}, ${role}, ${firstname}, ${lastname}, ${mobile_number}, ${password}
     from ${DB_TABLES.USERS}
     where ${email}=?
   `,
