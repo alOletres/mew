@@ -28,5 +28,29 @@ export const USER_QUERIES = {
     } catch (err) {
       return returnError(connection, err)
     }
+  },
+  EDIT_USER: async (
+    connection: Connection,
+    {
+      roles, firstname, lastname, id,
+      address, mobile_number, email, password
+    }: IUser
+  ): Promise<Query<any> | IError> => {
+    try {
+      if (!connection) throw new ErrorException("Unable to connect to database.")
+
+      connection.beginTransaction()
+
+      const response = await connection.query(
+        PRESET_QUERIES.EDIT_USER,
+        [roles, firstname, lastname, address, mobile_number, email, password, id]
+      )
+      
+      connection.commit()
+
+      return response
+    } catch (err) {
+      return returnError(connection, err)
+    }
   }
 }

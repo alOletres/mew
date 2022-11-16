@@ -47,5 +47,44 @@ export const UserController = {
 
       catchError(error, res)
     }
+  },
+  EDIT_USER: async (req: Request, res: Response) => {
+    try {
+      const connection: Connection = req._config_.connection as Connection
+      const id: number | undefined = req.params?.id as unknown as number 
+
+      if (!id) throw new ErrorException("User ID is missing from request params.")
+
+      const {
+        roles, firstname, lastname,
+        address, mobile_number, email,
+        password
+      }: IUser = req.body
+
+      const transformedRoles: TUserRole[] = JSON.parse(roles).map((item: TUserRole): TUserRole => item.toLocaleLowerCase() as TUserRole)
+
+      /** Check role */
+      if (!transformedRoles.length) throw new ErrorException("User role should not be null.")
+      if (!checkRole(transformedRoles)) throw new ErrorException("Roles should only include the following values: admin, customer or staff.")
+
+      /** Step 1: hash user's password */
+      const hashedPassword: string = hashPassword(password)
+
+      /** Step 2: save data to database */
+      const editUserResponse = await USER_QUERIES.EDIT_USER(connection, {
+        roles, firstname, lastname, address, id,
+        mobile_number, email, password: hashedPassword
+      })
+
+      if (isError(editUserResponse)) throw new ErrorException(editUserResponse.message ?? "Something went wrong, please check your data.")
+
+      res.status(EHttpStatusCode.OK).send({
+        message: "User is successfully updated!"
+      })
+    } catch (err) {
+      const error: ErrorException = err as ErrorException
+
+      catchError(error, res)
+    }
   }
 }

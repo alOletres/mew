@@ -35,6 +35,11 @@ export const PRESET_QUERIES = {
     (${role}, ${firstname}, ${lastname}, ${address}, ${mobile_number}, ${email}, ${password})
     VALUES(?, ?, ?, ?, ?, ?, ?)
   `,
+  EDIT_USER: `
+    UPDATE ${DB_TABLES.USERS}
+    SET ${role}=?, ${firstname}=?, ${lastname}=?, ${address}=?, ${mobile_number}=?, ${email}=?, ${password}=?
+    WHERE ${userId}=?
+  `,
   GET_REFRESH_TOKEN: `
     SELECT ${refresh_token} 
     from ${DB_TABLES.USERS}
