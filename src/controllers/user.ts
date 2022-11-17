@@ -86,5 +86,21 @@ export const UserController = {
 
       catchError(error, res)
     }
+  },
+  LIST_USER: async (req: Request, res: Response) => {
+    try {
+      const connection: Connection = req._config_.connection as Connection
+
+      const list = await USER_QUERIES.LIST_USER(connection)
+
+      res.status(EHttpStatusCode.OK).send({
+        message: "Data is fetched succesfully!",
+        data: list
+      })
+    } catch (err) {
+      const error: ErrorException = err as ErrorException
+
+      catchError(error, res)
+    }
   }
 }

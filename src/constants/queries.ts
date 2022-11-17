@@ -40,6 +40,9 @@ export const PRESET_QUERIES = {
     SET ${role}=?, ${firstname}=?, ${lastname}=?, ${address}=?, ${mobile_number}=?, ${email}=?, ${password}=?
     WHERE ${userId}=?
   `,
+  LIST_USER: `
+    SELECT * FROM ${DB_TABLES.USERS}
+  `,
   GET_REFRESH_TOKEN: `
     SELECT ${refresh_token} 
     from ${DB_TABLES.USERS}
