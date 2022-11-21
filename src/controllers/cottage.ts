@@ -82,7 +82,7 @@ export const CottageController = {
 
       res.status(EHttpStatusCode.OK).send({
         message: "Data is successfully fetched.",
-        data: {list: listWithImages}
+        data: listWithImages
       })
     } catch (err) {
       const error: ErrorException = err as ErrorException
