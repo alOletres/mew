@@ -6,6 +6,14 @@ export const authToken = (req: Request, res: Response, next: NextFunction) => {
 	try {
 		/**
 		 * 
+		 * Before anything else, check for landing headers
+		 */
+		const landingHeader: undefined | Boolean = req.headers && req.headers["landing"] as unknown as Boolean
+
+		if (landingHeader && Boolean(landingHeader) == true) return next()
+		
+		/**
+		 * 
 		 * Step 1: Extract the `Authorization` header from the request's headers
 		 */
 		const authHeader = req.headers && req.headers["authorization"]
