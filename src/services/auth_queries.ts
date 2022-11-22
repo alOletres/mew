@@ -11,7 +11,7 @@ export const AUTH_QUERIES = {
     try {
       const checkAccount: IDecodedToken[] = await connection.query(PRESET_QUERIES.LOGIN, [email])
 
-      if (!checkAccount.length) throw new ErrorException("Account does not exist.")
+      if (!checkAccount || !checkAccount.length) throw new ErrorException("Account does not exist.")
 
       const {
         password: hashedPassword,
