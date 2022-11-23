@@ -7,7 +7,7 @@ export const AUTH_QUERIES = {
   LOGIN: async (
     connection: Connection,
     {email, password}: ILogin
-  ): Promise<object | null> => {
+  ): Promise<object | null | IError> => {
     try {
       const checkAccount: IDecodedToken[] = await connection.query(PRESET_QUERIES.LOGIN, [email])
 

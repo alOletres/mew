@@ -1,7 +1,7 @@
 import {Request, Response} from "express"
 import {Connection} from "promise-mysql"
 import {ErrorException, catchError, validateToken, generateToken, decodeToken} from "./../utils";
-import {ILogin, IRequestFreshToken, IDecodedToken} from "./../types"
+import {ILogin, IRequestFreshToken, IDecodedToken, IError} from "./../types"
 import {AUTH_QUERIES} from "./../services"
 import {PRESET_QUERIES, TOKEN_EXPIRY, EHttpStatusCode} from "./../constants"
 
@@ -17,9 +17,14 @@ export const AuthController = {
       if (!email || !password) throw new ErrorException("Username or password is required.")
 
       connection.beginTransaction()
-      const loginResponse: object | null = await AUTH_QUERIES.LOGIN(connection, {email, password})
+      const loginResponse: object | IError | null = await AUTH_QUERIES.LOGIN(connection, {email, password})
       connection.commit()
 
+      const isErrorTyped = (data: object | IError): data is IError => {
+        return "error" in data
+      }
+
+      if (loginResponse && isErrorTyped(loginResponse) && loginResponse.error) throw new ErrorException(loginResponse.message ?? "Internal Server Error")
       if (!loginResponse) throw new ErrorException("Username or password is incorrect.", EHttpStatusCode.FORBIDDEN)
 
       res.status(EHttpStatusCode.OK).send({
