@@ -1,20 +1,33 @@
 export interface IBooker {
-  userid: number;
   firstname: string;
   lastname: string;
+  contact: string;
+  email: string;
   address: string;
-  mobile_number?: string;
-  email?: string;
+  roles: string;
 }
 
 export type EBookingPaymentType = "gcash" | "cash"
 
-export interface IBooking {
-  date_booked: Date;
-  cottage_number: number;
-  selected_date_from: Date;
-  selected_date_to: Date;
+interface IDatesBooked {
+  from: Date;
+  to: Date;
+}
+
+interface IPayment {
+  accountName: string;
+  accountNumber: string;
+  reference: string;
+  amount: number;
+  remarks?: string;
   payment_type: EBookingPaymentType;
-  booker: IBooker;
-  payment_receipt?: Blob;
+}
+
+export interface IBooking {
+  cottages: string;
+  dates: IDatesBooked;
+  user?: IBooker;
+  payment: IPayment;
+  other?: object;
+  receiptAttachment?: string[];
 }

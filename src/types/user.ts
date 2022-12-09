@@ -13,3 +13,11 @@ export interface IUser {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface IGuestDetails {
+  firstname: string;
+  lastname: string;
+  email?: string;
+  contact: string;
+  address: string;
+}
