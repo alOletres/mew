@@ -23,8 +23,8 @@ jobs:
         env:
           CI: true
         run: |
-          cd src && npm ci
+          npm ci
       - name: deploy
         run: |
-          zip -r deploy.zip ./src/*
+          zip -r deploy.zip ./*
           aws lambda update-function-code --function-name=resort --zip-file=fileb://deploy.zip
