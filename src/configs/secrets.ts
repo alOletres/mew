@@ -4,7 +4,7 @@ config()
 
 const port: number | undefined = process.env.PORT as unknown as number /** <-- Env variable in heroku */
 
-const NODE_ENV: string | undefined = process.env.NODE_ENV as EnvironmentType
+export const NODE_ENV: string | undefined = process.env.NODE_ENV as EnvironmentType
 
 export const PORT: number | undefined = NODE_ENV === NodeEnvironment.DEVELOPMENT
   ? process.env.DEVELOPMENT_PORT as unknown as number

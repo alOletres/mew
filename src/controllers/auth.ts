@@ -6,6 +6,32 @@ import {AUTH_QUERIES} from "./../services"
 import {PRESET_QUERIES, TOKEN_EXPIRY, EHttpStatusCode} from "./../constants"
 
 export const AuthController = {
+  UPDATE_PASSWORD: async (req: Request, res: Response) => {
+    const connection: Connection = req._config_.connection as Connection
+
+    interface IUpdatePassword {
+      id: number;
+      currentPassword: string;
+      newPassword: string;
+    }
+
+    try {
+      const {
+        id, currentPassword, newPassword
+      }: IUpdatePassword = req.body
+
+      if (!id) throw new ErrorException("User ID is missing from the request's payload.")
+      if (!currentPassword) throw new ErrorException("Current password is required.")
+      if (!newPassword) throw new ErrorException("New password is required.")
+
+      // const newCred = hashPassword(newPassword)
+    } catch (err) {
+      connection.rollback()
+      const error: ErrorException = err as ErrorException
+
+      catchError(error, res)
+    }
+  },
   LOGIN: async (req: Request, res: Response) => {
     const connection: Connection = req._config_.connection as Connection
 

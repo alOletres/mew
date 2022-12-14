@@ -19,7 +19,7 @@ export const CottageController = {
         description,
         price,
         is_available,
-        cottageNumber,
+        cottage_number,
         capacity
       }: ICottage = req.body
 
@@ -33,7 +33,7 @@ export const CottageController = {
         type, description, price, 
         is_available: is_available === 'true',
         images: JSON.stringify(files),
-        cottageNumber, capacity
+        cottage_number, capacity
       })
       
       if (isError(addCottage)) throw new ErrorException("Something went wrong during the process, please check the request payload or your internet connection.")
@@ -103,7 +103,7 @@ export const CottageController = {
         price,
         is_available,
         capacity,
-        cottageNumber
+        cottage_number
       }: ICottage = req.body
 
       if (!checkType(type)) throw new ErrorException("Cottage type should either be floating or non-floating.", EHttpStatusCode.INTERNAL_SERVER_ERROR)
@@ -115,7 +115,7 @@ export const CottageController = {
       await EDIT_COTTAGE(connection, {
         type, description, price, is_available,
         images: JSON.stringify(files), id: cottageId,
-        cottageNumber, capacity
+        cottage_number, capacity
       })
 
       res.status(EHttpStatusCode.OK).send({

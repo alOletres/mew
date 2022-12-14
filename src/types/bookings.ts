@@ -30,4 +30,5 @@ export interface IBooking {
   payment: IPayment;
   other?: object;
   receiptAttachment?: string[];
+  userid?: number;
 }

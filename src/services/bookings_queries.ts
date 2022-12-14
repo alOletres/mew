@@ -11,12 +11,13 @@ export const BOOKING_QUERIES = {
     try {
       if (!connection) throw new ErrorException("Unable to connect to database.")
       const values = [
-        details.cottage_number,
-        details.selected_date_from,
-        details.selected_date_to,
-        details.payment_type,
-        details.booker.userid,
-        details.payment_receipt
+        details.cottages,
+        details.dates,
+        details.other,
+        details.payment,
+        details.receiptAttachment,
+        details.user,
+        details.userid
       ]
 
       const query = await connection.query(PRESET_QUERIES.CREATE_BOOKING, [...values])

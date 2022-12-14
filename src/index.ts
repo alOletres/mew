@@ -1,7 +1,8 @@
 import express, { Express } from "express"
 import cors from "cors"
 import path from "path"
-import {PORT} from "./configs"
+import serverless from "serverless-http"
+import {PORT, NODE_ENV} from "./configs"
 import {router, databaseConnect, logger, upload} from "./middlewares"
 
 const app: Express = express()
@@ -16,4 +17,9 @@ app.use(databaseConnect)
 
 router(app)
 
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}.`))
+if (NODE_ENV && NODE_ENV === "development") {
+  app.listen(PORT, () => console.log(`Server is running on port ${PORT}.`))
+} 
+
+export const handler = serverless(app)
+
