@@ -19,7 +19,7 @@ app.use(logger)
 
 router(app)
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/staging", (req: Request, res: Response) => {
   res.status(200).send({
     message: "Gwapo ko"
   })
