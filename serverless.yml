@@ -1,5 +1,9 @@
 service: resort-server
 
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
 provider:
   name: aws
   runtime: nodejs14.x
@@ -7,3 +11,6 @@ provider:
 functions:
   resortFunction: 
     handler: dist/index.handler
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
