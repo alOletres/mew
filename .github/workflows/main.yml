@@ -4,9 +4,7 @@ on:
   push:
     branches:
     - main
-
-service: 
-  name: serverless
+    
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
