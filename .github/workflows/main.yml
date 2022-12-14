@@ -24,7 +24,10 @@ jobs:
           CI: true
         run: |
           npm ci
-      - name: Setting up serverless config credentials from AWS
-        run: serverless config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Deploy
-        run: serverless deploy
+      - name: Building Typescript
+        run: tsc
+      - name: deploy
+        run: |
+          tsc
+          zip -j deploy.zip ./dist/*
+          aws lambda update-function-code --function-name=resort --zip-file=fileb://deploy.zip
