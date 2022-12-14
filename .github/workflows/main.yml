@@ -23,11 +23,8 @@ jobs:
         env:
           CI: true
         run: |
-          npm ci
-      - name: Building Typescript
-        run: tsc
+          cd src && npm ci
       - name: deploy
         run: |
-          tsc
-          zip -j deploy.zip ./dist/*
+          zip -r deploy.zip ./src/*
           aws lambda update-function-code --function-name=resort --zip-file=fileb://deploy.zip
