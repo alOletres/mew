@@ -5,6 +5,28 @@ on:
     branches:
     - main
 
+service: 
+  name: serverless
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+plugins:
+  - serverless-webpack
+  - serverless-offline
+provider:
+  name: aws
+  runtime: nodejs12.x
+  apiGateway:
+    minimumCompressionSize: 1024
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+functions:
+  resort:
+    handler: src/index.handler
+    events:
+      - http: 'ANY {proxy+}'
+
 jobs:
   deploy_lambda:
     runs-on: ubuntu-latest
@@ -24,10 +46,7 @@ jobs:
           CI: true
         run: |
           npm ci
-      - name: tsc
-        run: tsc
+      - name: Setting up serverless config credentials from AWS
+        run: serverless config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: deploy
-        run: |
-          tsc
-          zip -j deploy.zip ./dist/*
-          aws lambda update-function-code --function-name=resort --zip-file=fileb://deploy.zip
+        run: serverless deploy

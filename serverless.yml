@@ -1,0 +1,9 @@
+service: resort-server
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+functions:
+  resortFunction: 
+    handler: dist/index.handler

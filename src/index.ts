@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from "express"
+import { Handler } from "aws-lambda"
 import cors from "cors"
 import path from "path"
 import serverless from "serverless-http"
@@ -28,5 +29,5 @@ if (NODE_ENV && NODE_ENV === "development") {
   app.listen(PORT, () => console.log(`Server is running on port ${PORT}.`))
 } 
 
-export const handler = serverless(app)
+export const handler: Handler = serverless(app)
 
