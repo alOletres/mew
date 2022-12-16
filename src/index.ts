@@ -1,11 +1,8 @@
-import express, { Express, Request, Response } from "express"
-import { Handler } from "aws-lambda"
+import express, { Express } from "express"
 import cors from "cors"
 import path from "path"
-import serverless from "serverless-http"
-import {PORT, NODE_ENV} from "./configs"
-import {router, logger, upload} from "./middlewares"
-// databaseConnect
+import {PORT} from "./configs"
+import {router, logger, upload, databaseConnect} from "./middlewares"
 
 const app: Express = express()
 
@@ -15,19 +12,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(upload.array("images"))
 app.use(logger)
-// app.use(databaseConnect)
+app.use(databaseConnect)
 
 router(app)
 
-app.get("/staging", (req: Request, res: Response) => {
-  res.status(200).send({
-    message: "Gwapo ko"
-  })
-})
-
-if (NODE_ENV && NODE_ENV === "development") {
-  app.listen(PORT, () => console.log(`Server is running on port ${PORT}.`))
-} 
-
-export const handler: Handler = serverless(app)
-
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}.`))

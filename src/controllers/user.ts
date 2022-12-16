@@ -8,7 +8,8 @@ import {EHttpStatusCode} from "./../constants"
 const checkRole = (role: TUserRole[]): role is TUserRole[] => {
   return !role.includes("admin") 
       || !role.includes("customer") 
-      || !role.includes("staff")
+      || !role.includes("manager")
+      || !role.includes("booking_agent")
 }
 
 export const UserController = {

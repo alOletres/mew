@@ -10,12 +10,22 @@ export const BookingsController = {
     try {
       const details: IBooking = req.body
 
+      /**
+       * 
+       * If `userid` is defined, meaning na naa nay account si user daan
+       */
+
       const uploadedReceipt: any[] = req.files as unknown as any[]
       const attachment: string[] = uploadedReceipt && uploadedReceipt.length 
         ? uploadedReceipt.map((file: any) => file.path)
         : []
 
       details["receiptAttachment"] = attachment
+
+      console.log(details)
+
+      res.sendStatus(200)
+      return
 
       const connection = await DATABASE_CONNECT
 

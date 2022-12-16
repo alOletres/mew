@@ -1,11 +1,4 @@
-export interface IBooker {
-  firstname: string;
-  lastname: string;
-  contact: string;
-  email: string;
-  address: string;
-  roles: string;
-}
+import {IUser} from "."
 
 export type EBookingPaymentType = "gcash" | "cash"
 
@@ -24,9 +17,10 @@ interface IPayment {
 }
 
 export interface IBooking {
-  cottages: string;
+  cottages: number[];
   dates: IDatesBooked;
-  user?: IBooker;
+  user?: IUser;
+  images?: Blob;
   payment: IPayment;
   other?: object;
   receiptAttachment?: string[];
