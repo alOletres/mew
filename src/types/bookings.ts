@@ -26,3 +26,9 @@ export interface IBooking {
   receiptAttachment?: string[];
   userid?: number;
 }
+
+type IBookingModifiedType = {
+  [Property in keyof IBooking]-?: string
+}
+
+export type IBookingDatabase = Omit<IBookingModifiedType, "images">

@@ -10,17 +10,21 @@ export const BookingsController = {
     try {
       const details: IBooking = req.body
 
-      /**
-       * 
-       * If `userid` is defined, meaning na naa nay account si user daan
-       */
-
       const uploadedReceipt: any[] = req.files as unknown as any[]
       const attachment: string[] = uploadedReceipt && uploadedReceipt.length 
         ? uploadedReceipt.map((file: any) => file.path)
         : []
 
       details["receiptAttachment"] = attachment
+
+      /**
+       * 
+       * If `userid` property is defined, proceed directly
+       * without creating a new user
+       */
+      if (details.userid) {
+        
+      }
 
       console.log(details)
 
