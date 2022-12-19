@@ -93,3 +93,18 @@ export const comparePassword = (
 ): boolean | undefined => {
   return compareSync(password, hashedPassword)
 }
+
+/**
+ * 
+ * @param object is the object to check
+ * @param propToCheck is the object's property to check
+ * @returns a boolean, result for type check
+ */
+export const checkType = <T>(
+  object: any,
+  propToCheck: string | string[]
+): object is T => {
+  return typeof propToCheck === "string" 
+    ? propToCheck in object
+    : propToCheck.every((x: string) => x in object)
+}

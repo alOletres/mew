@@ -2,12 +2,12 @@ import {IUser} from "."
 
 export type EBookingPaymentType = "gcash" | "cash"
 
-interface IDatesBooked {
+export interface IDatesBooked {
   from: Date;
   to: Date;
 }
 
-interface IPayment {
+export interface IPayment {
   accountName: string;
   accountNumber: string;
   reference: string;
@@ -17,11 +17,11 @@ interface IPayment {
 }
 
 export interface IBooking {
-  cottages: number[];
+  cottages: number[] | string;
   dates: IDatesBooked;
-  user?: IUser;
+  user?: IUser | string;
   images?: Blob;
-  payment: IPayment;
+  payment: IPayment | string;
   other?: object;
   receiptAttachment?: string[];
   userid?: number;

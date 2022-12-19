@@ -6,13 +6,11 @@ const timestampColumns = {
 export const DB_COLUMNS = {
   BOOKINGS: {
     id: "id",
-    date_booked: "date_booked",
-    cottage: "cottage",
+    cottages: "cottages",
     selected_date_from: "selected_date_from",
     selected_date_to: "selected_date_to",
-    payment_type: "payment_type",
+    payment_record: "payment_record",
     booker: "booker",
-    receipt: "receipt",
     ...timestampColumns
   },
   USER: {
@@ -36,6 +34,15 @@ export const DB_COLUMNS = {
     price: "price",
     is_available: "is_available",
     images: "images",
+    ...timestampColumns
+  },
+  PAYMENT: {
+    id: "id",
+    type: "type",
+    account_name: "account_name",
+    account_number: "account_number",
+    reference_number: "reference_number",
+    receipt: "receipt",
     ...timestampColumns
   }
 }

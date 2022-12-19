@@ -1,7 +1,7 @@
 import {Connection, Query} from "promise-mysql"
 import {ErrorException} from "./../utils"
 import {PRESET_QUERIES} from "../constants"
-import {IUser, IError} from "./../types"
+import {IUser, IError, IQueryOk} from "./../types"
 import {returnError} from "./../utils"
 
 export const USER_QUERIES = {
@@ -11,7 +11,7 @@ export const USER_QUERIES = {
       roles, firstname, lastname,
       address, mobile_number, email, password
     }: IUser
-  ): Promise<Query<any> | IError> => {
+  ): Promise<IQueryOk | IError> => {
     try {
       if (!connection) throw new ErrorException("Unable to connect to database.")
 

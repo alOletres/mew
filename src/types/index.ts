@@ -1,12 +1,13 @@
-import {IBooking, EBookingPaymentType} from "./bookings"
+import {IBooking, EBookingPaymentType, IPayment, IDatesBooked} from "./bookings"
 import {ICottage, TCottageType, TParamFilter, IFilterBy} from './cottages';
 import {TUserRole, IUser, IGuestDetails} from "./user"
 import {IRequestFreshToken, ILogin, IDecodedToken} from "./auth"
-import {IError} from "./generic_types"
+import {IError, IQueryOk} from "./generic_types"
 
 export {
   IBooking, EBookingPaymentType, 
   ICottage, TCottageType, IRequestFreshToken, 
   TUserRole, IUser, ILogin, IDecodedToken, IError,
-  TParamFilter, IFilterBy, IGuestDetails
+  TParamFilter, IFilterBy, IGuestDetails, IPayment,
+  IQueryOk, IDatesBooked
 }

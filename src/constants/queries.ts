@@ -3,8 +3,8 @@ import {DB_COLUMNS} from "./db_columns"
 
 const {
   BOOKINGS: {
-    cottage, selected_date_from, selected_date_to,
-    payment_type, booker, receipt
+    cottages, selected_date_from, selected_date_to,
+    payment_record, booker,
   },
   USER: {
     refresh_token, email, role,
@@ -16,10 +16,20 @@ const {
     type, description, 
     price, is_available, images,
     cottage_number, capacity
+  },
+  PAYMENT: {
+    type: payment_type, account_name,
+    account_number, reference_number,
+    receipt
   }
 } = DB_COLUMNS
 
 export const PRESET_QUERIES = {
+  ADD_PAYMENT: `
+    INSERT INTO ${DB_TABLES.PAYMENT}
+    (${payment_type}, ${account_name}, ${account_number}, ${reference_number}, ${receipt})
+    VALUES (?, ?, ?, ?, ?)
+  `,
   CREATE_COTTAGE: `
     INSERT INTO ${DB_TABLES.COTTAGES}
     (${type}, ${cottage_number}, ${description}, ${capacity}, ${price}, ${is_available}, ${images})
@@ -27,8 +37,8 @@ export const PRESET_QUERIES = {
   `,
   CREATE_BOOKING: `
     INSERT INTO ${DB_TABLES.BOOKINGS}
-    (${cottage}, ${selected_date_from}, ${selected_date_to}, ${payment_type}, ${booker}, ${receipt}) 
-    VALUES(?, ?, ?, ?, ?, ?)
+    (${cottages}, ${selected_date_from}, ${selected_date_to}, ${payment_record}, ${booker}) 
+    VALUES(?, ?, ?, ?, ?)
   `,
   CREATE_USER: `
     INSERT INTO ${DB_TABLES.USERS}
