@@ -9,4 +9,6 @@ const app: Router = Router()
  */
 app.post("/", BookingsController.BOOK)
 
+app.post("/update/:id", BookingsController.UPDATE_BOOKING_STATUS)
+
 export default app
