@@ -103,6 +103,11 @@ export const BookingsController = {
       if (checkType<IUser>(userDetails, ["firstname", "lastname"])) {
         const {password} = userDetails
 
+        if (!password) {
+          connection.rollback()
+          throw new ErrorException("User must provide a password.")
+        }
+
         const hashedPassword: string = hashPassword(password)
 
         const createdUser = await USER_QUERIES.CREATE_USER(connection, {
