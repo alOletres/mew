@@ -1,12 +1,12 @@
 import {Request, Response} from "express"
 import {Connection} from "promise-mysql"
 import {ErrorException, catchError, checkType, hashPassword} from "./../utils"
-import {IBooking, IQueryOk, IUser, IDatesBooked} from "./../types"
+import {IBooking, IQueryOk, IUser, IDatesBooked, EBookingStatuses} from "./../types"
 import {BOOKING_QUERIES, USER_QUERIES} from "./../services"
 import {EHttpStatusCode} from "./../constants"
 
 export const BookingsController = {
-  book: async (req: Request, res: Response) => {
+  BOOK: async (req: Request, res: Response) => {
     const connection: Connection = req._config_.connection as Connection
 
     try {
@@ -147,6 +147,35 @@ export const BookingsController = {
         message: "Something went wrong, please try again later."
       })
     } catch (err: unknown) {
+      const error: ErrorException = err as ErrorException
+
+      connection.rollback()
+      catchError(error, res)
+    }
+  },
+  UPDATE_BOOKING_STATUS: async (req: Request, res: Response) => {
+    const connection: Connection = req._config_.connection as Connection
+
+    try {
+      const bookingId: number = req.params?.id as unknown as number
+
+      const {status}: {status: EBookingStatuses} = req.body
+
+      if (!bookingId) throw new ErrorException("Booking id must be supplied from thr URL params.")
+
+      if (!["pending", "approved", "rejected", "voided"].includes(status.toLowerCase())) throw new ErrorException("Status value should either be PENDING, APPROVED, REJECTED or VOIDED.")
+
+      const updateStatus = await BOOKING_QUERIES.UPDATE_BOOKING(connection, {
+        id: bookingId,
+        status
+      })
+
+      if (checkType<IQueryOk>(updateStatus, "affectedRows")) return res.status(EHttpStatusCode.OK).send({
+        message: "Booking status is successfully updated."
+      })
+
+      throw new ErrorException("Something went wrong, please try again later.")
+    } catch (err) {
       const error: ErrorException = err as ErrorException
 
       connection.rollback()

@@ -11,6 +11,7 @@ export const DB_COLUMNS = {
     selected_date_to: "selected_date_to",
     payment_record: "payment_record",
     booker: "booker",
+    status: "status",
     ...timestampColumns
   },
   USER: {

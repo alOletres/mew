@@ -2,6 +2,8 @@ import {IUser} from "."
 
 export type EBookingPaymentType = "gcash" | "cash"
 
+export type EBookingStatuses = "pending" | "approved" | "rejected" | "voided"
+
 export interface IDatesBooked {
   from: Date;
   to: Date;

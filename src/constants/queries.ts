@@ -4,7 +4,7 @@ import {DB_COLUMNS} from "./db_columns"
 const {
   BOOKINGS: {
     cottages, selected_date_from, selected_date_to,
-    payment_record, booker,
+    payment_record, booker, status: bookingStatus, id: bookingId
   },
   USER: {
     refresh_token, email, role,
@@ -39,6 +39,11 @@ export const PRESET_QUERIES = {
     INSERT INTO ${DB_TABLES.BOOKINGS}
     (${cottages}, ${selected_date_from}, ${selected_date_to}, ${payment_record}, ${booker}) 
     VALUES(?, ?, ?, ?, ?)
+  `,
+  UPDATE_BOOKING_STATUS: `
+    UPDATE ${DB_TABLES.BOOKINGS}
+    SET ${bookingStatus}=?
+    WHERE ${bookingId}=?
   `,
   CREATE_USER: `
     INSERT INTO ${DB_TABLES.USERS}

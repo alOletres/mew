@@ -1,5 +1,5 @@
 import {Connection} from "promise-mysql"
-import {IError, IQueryOk} from "../types"
+import {IError, IQueryOk, EBookingStatuses} from "../types"
 import {ErrorException, returnError} from "../utils"
 import {PRESET_QUERIES} from "../constants"
 
@@ -58,6 +58,21 @@ export const BOOKING_QUERIES = {
       ]
 
       const query = await connection.query(PRESET_QUERIES.CREATE_BOOKING, [...values])
+
+      return query
+    } catch (err) {
+      return returnError(connection, err)
+    }
+  },
+  UPDATE_BOOKING: async (
+    connection: Connection,
+    details: {
+      id: number;
+      status: EBookingStatuses;
+    }
+  ): Promise<IQueryOk | IError> => {
+    try {
+      const query = await connection.query(PRESET_QUERIES.UPDATE_BOOKING_STATUS, [details.status, details.id])
 
       return query
     } catch (err) {

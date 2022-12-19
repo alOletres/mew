@@ -7,6 +7,6 @@ const app: Router = Router()
  * 
  * Root endpoint, creates the customer booking
  */
-app.post("/", BookingsController.book)
+app.post("/", BookingsController.BOOK)
 
 export default app
