@@ -88,5 +88,8 @@ export const PRESET_QUERIES = {
     UPDATE ${DB_TABLES.COTTAGES}
     SET ${type}=?, ${cottage_number}=?, ${description}=?, ${capacity}=?, ${price}=?, ${is_available}=?, ${images}=?
     WHERE ${DB_COLUMNS.COTTAGE.id}=?
+  `,
+  LIST_BOOKINGS: `
+    SELECT * FROM ${DB_TABLES.BOOKINGS}
   `
 }

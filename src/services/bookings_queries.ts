@@ -1,4 +1,4 @@
-import {Connection} from "promise-mysql"
+import {Connection, Query} from "promise-mysql"
 import {IError, IQueryOk, EBookingStatuses} from "../types"
 import {ErrorException, returnError} from "../utils"
 import {PRESET_QUERIES} from "../constants"
@@ -76,6 +76,15 @@ export const BOOKING_QUERIES = {
 
       return query
     } catch (err) {
+      return returnError(connection, err)
+    }
+  },
+  LIST_BOOKINGS: async (connection: Connection): Promise<Query<any> | IError> => {
+    try {
+      const list: Query<any> = await connection.query(PRESET_QUERIES.LIST_BOOKINGS)
+
+      return list
+    } catch (err) { 
       return returnError(connection, err)
     }
   }

@@ -1,5 +1,5 @@
 import {Request, Response} from "express"
-import {Connection} from "promise-mysql"
+import {Connection, Query} from "promise-mysql"
 import {ErrorException, catchError, checkType, hashPassword} from "./../utils"
 import {IBooking, IQueryOk, IUser, IDatesBooked, EBookingStatuses} from "./../types"
 import {BOOKING_QUERIES, USER_QUERIES} from "./../services"
@@ -161,7 +161,7 @@ export const BookingsController = {
 
       const {status}: {status: EBookingStatuses} = req.body
 
-      if (!bookingId) throw new ErrorException("Booking id must be supplied from thr URL params.")
+      if (!bookingId) throw new ErrorException("Booking id must be supplied from the URL params.")
 
       if (!["pending", "approved", "rejected", "voided"].includes(status.toLowerCase())) throw new ErrorException("Status value should either be PENDING, APPROVED, REJECTED or VOIDED.")
 
@@ -175,6 +175,25 @@ export const BookingsController = {
       })
 
       throw new ErrorException("Something went wrong, please try again later.")
+    } catch (err) {
+      const error: ErrorException = err as ErrorException
+
+      connection.rollback()
+      catchError(error, res)
+    }
+  },
+  BOOKING_LIST: async (req: Request, res: Response) => {
+    const connection: Connection = req._config_.connection as Connection
+
+    try {
+      const list: Query<any> = (await BOOKING_QUERIES.LIST_BOOKINGS(connection)) as Query<any>
+
+      if (checkType<Query<any>>(list, "values") && list && list.values) return res.status(EHttpStatusCode.OK).send({
+        message: "Data is fetched successfully.",
+        data: [...list.values]
+      })
+
+      if (!checkType<Query<any>>(list, "OkPacket")) throw new ErrorException("Something went wrong, please try again later.")
     } catch (err) {
       const error: ErrorException = err as ErrorException
 
