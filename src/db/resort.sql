@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 19, 2022 at 08:14 AM
+-- Generation Time: Dec 19, 2022 at 08:38 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -37,6 +37,7 @@ CREATE TABLE `m_bookings` (
   `selected_date_to` date NOT NULL,
   `payment_record` int(11) DEFAULT NULL,
   `booker` int(11) NOT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'pending',
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -45,8 +46,8 @@ CREATE TABLE `m_bookings` (
 -- Dumping data for table `m_bookings`
 --
 
-INSERT INTO `m_bookings` (`id`, `cottages`, `selected_date_from`, `selected_date_to`, `payment_record`, `booker`, `createdAt`, `updatedAt`) VALUES
-(1, '[1, 2]', '2022-12-15', '2022-12-17', 1, 20, '2022-12-19 07:13:07', '2022-12-19 07:13:07');
+INSERT INTO `m_bookings` (`id`, `cottages`, `selected_date_from`, `selected_date_to`, `payment_record`, `booker`, `status`, `createdAt`, `updatedAt`) VALUES
+(1, '[1, 2]', '2022-12-15', '2022-12-17', 1, 20, 'pending', '2022-12-19 07:13:07', '2022-12-19 07:13:07');
 
 -- --------------------------------------------------------
 
