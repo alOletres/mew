@@ -1,13 +1,32 @@
-import {ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, SALTROUNDS} from "./../configs"
+import {ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, SALTROUNDS, EmailTransporter, MAILER_EMAIL} from "./../configs"
 import {sign, SignOptions, verify} from "jsonwebtoken"
+import {SendMailOptions} from "nodemailer"
 import {ErrorException} from './errors';
 import {AUTH_QUERIES} from "./../services"
 import {Connection} from "promise-mysql";
 import {hashSync, compareSync} from "bcrypt"
 import {TOKEN_EXPIRY, EHttpStatusCode} from "./../constants"
 import fs from "fs"
+import {EBookingStatuses} from "./../types"
 
 const reader = fs.promises
+
+export const sendMail = (status: EBookingStatuses, to: string): void => {
+  const emailBody = status === "approved" || status === "rejected" || status === "voided"
+    ? `Hello! The purpose of this email is to inform you that your booking reservation has been ${status}.`
+    : status === "pending"
+    ? `Hello! Your booking reservation is currently in ${status} state.`
+    : ""
+
+  const options: SendMailOptions = {
+    from: MAILER_EMAIL,
+    to,
+    subject: "RVS Resort Notification",
+    html: emailBody
+  }
+
+  EmailTransporter.sendMail(options)
+}
 
 export const readFile = async (filePath: string) => {
   try {
