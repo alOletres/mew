@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 19, 2022 at 08:38 AM
+-- Generation Time: Dec 20, 2022 at 06:07 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -32,6 +32,7 @@ USE resort;
 
 CREATE TABLE `m_bookings` (
   `id` int(11) NOT NULL,
+  `type` varchar(10) NOT NULL,
   `cottages` varchar(100) NOT NULL,
   `selected_date_from` date NOT NULL,
   `selected_date_to` date NOT NULL,
@@ -46,8 +47,8 @@ CREATE TABLE `m_bookings` (
 -- Dumping data for table `m_bookings`
 --
 
-INSERT INTO `m_bookings` (`id`, `cottages`, `selected_date_from`, `selected_date_to`, `payment_record`, `booker`, `status`, `createdAt`, `updatedAt`) VALUES
-(1, '[1, 2]', '2022-12-15', '2022-12-17', 1, 20, 'pending', '2022-12-19 07:13:07', '2022-12-19 07:13:07');
+INSERT INTO `m_bookings` (`id`, `type`, `cottages`, `selected_date_from`, `selected_date_to`, `payment_record`, `booker`, `status`, `createdAt`, `updatedAt`) VALUES
+(1, '', '[1, 2]', '2022-12-15', '2022-12-17', 1, 20, 'pending', '2022-12-19 07:13:07', '2022-12-19 07:13:07');
 
 -- --------------------------------------------------------
 
@@ -108,7 +109,7 @@ INSERT INTO `m_payment_records` (`id`, `type`, `account_name`, `account_number`,
 
 CREATE TABLE `m_users` (
   `id` int(11) NOT NULL,
-  `role` varchar(10) NOT NULL,
+  `role` text NOT NULL,
   `firstname` varchar(15) NOT NULL,
   `lastname` varchar(15) NOT NULL,
   `address` varchar(100) NOT NULL,

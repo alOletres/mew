@@ -18,9 +18,12 @@ export interface IPayment {
   payment_type: EBookingPaymentType;
 }
 
+export type TBookingType = "walkin" | "online"
+
 export interface IBooking {
   cottages: number[] | string;
   dates: IDatesBooked;
+  type: TBookingType;
   user?: IUser | string;
   images?: Blob;
   payment: IPayment | string;

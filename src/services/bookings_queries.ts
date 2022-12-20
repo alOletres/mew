@@ -1,5 +1,5 @@
 import {Connection, Query} from "promise-mysql"
-import {IError, IQueryOk, EBookingStatuses} from "../types"
+import {IError, IQueryOk, EBookingStatuses, TBookingType} from "../types"
 import {ErrorException, returnError} from "../utils"
 import {PRESET_QUERIES} from "../constants"
 
@@ -12,6 +12,7 @@ interface IPayment {
 }
 
 interface IBook {
+  type: TBookingType;
   cottages: string;
   dateFrom: Date;
   dateTo: Date;
@@ -50,6 +51,7 @@ export const BOOKING_QUERIES = {
       if (!connection) throw new ErrorException(ConnectivityError)
       
       const values = [
+        details.type,
         details.cottages,
         details.dateFrom,
         details.dateTo,

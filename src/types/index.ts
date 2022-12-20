@@ -1,4 +1,4 @@
-import {IBooking, EBookingPaymentType, IPayment, IDatesBooked, EBookingStatuses} from "./bookings"
+import {IBooking, EBookingPaymentType, IPayment, IDatesBooked, EBookingStatuses, TBookingType} from "./bookings"
 import {ICottage, TCottageType, TParamFilter, IFilterBy} from './cottages';
 import {TUserRole, IUser, IGuestDetails} from "./user"
 import {IRequestFreshToken, ILogin, IDecodedToken} from "./auth"
@@ -9,5 +9,5 @@ export {
   ICottage, TCottageType, IRequestFreshToken, 
   TUserRole, IUser, ILogin, IDecodedToken, IError,
   TParamFilter, IFilterBy, IGuestDetails, IPayment,
-  IQueryOk, IDatesBooked, EBookingStatuses
+  IQueryOk, IDatesBooked, EBookingStatuses, TBookingType
 }

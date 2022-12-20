@@ -66,6 +66,7 @@ export const BookingsController = {
        */
       if (details.userid) {
         const book = await BOOKING_QUERIES.CREATE_BOOKINGS(connection, {
+          type: details.type,
           cottages: typeof details.cottages === "string" ? details.cottages : JSON.stringify(details.cottages),
           dateFrom: dates.from,
           dateTo: dates.to,
@@ -125,6 +126,7 @@ export const BookingsController = {
         }
 
         const book = await BOOKING_QUERIES.CREATE_BOOKINGS(connection, {
+          type: details.type,
           cottages: typeof details.cottages === "string" ? details.cottages : JSON.stringify(details.cottages),
           dateFrom: dates.from,
           dateTo: dates.to,
@@ -190,7 +192,7 @@ export const BookingsController = {
 
       if (checkType<Query<any>>(list, "values") && list && list.values) return res.status(EHttpStatusCode.OK).send({
         message: "Data is fetched successfully.",
-        data: [...list.values]
+        data: list
       })
 
       if (!checkType<Query<any>>(list, "OkPacket")) throw new ErrorException("Something went wrong, please try again later.")

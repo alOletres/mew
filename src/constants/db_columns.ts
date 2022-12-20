@@ -6,6 +6,7 @@ const timestampColumns = {
 export const DB_COLUMNS = {
   BOOKINGS: {
     id: "id",
+    type: "type",
     cottages: "cottages",
     selected_date_from: "selected_date_from",
     selected_date_to: "selected_date_to",
