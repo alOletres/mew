@@ -22,7 +22,7 @@ export class ErrorException extends Error {
 }
 
 export const catchError = (err: ErrorException, res: Response) => {
-  return res.status(err.code || 500).send({
+  return res.status(err.code || EHttpStatusCode.INTERNAL_SERVER_ERROR).send({
     message: err.message,
     code: err.code,
     data: err.data
