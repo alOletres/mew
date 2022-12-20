@@ -13,6 +13,8 @@ export const BookingsController = {
       connection.beginTransaction()
       const details: IBooking = req.body
 
+      if (!details.type) throw new ErrorException("Booking type should either be `walkin` or `online`.")
+
       const uploadedReceipt: any[] = req.files as unknown as any[]
       const attachment: string[] = uploadedReceipt && uploadedReceipt.length 
         ? uploadedReceipt.map((file: any) => file.path)
