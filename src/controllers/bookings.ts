@@ -174,7 +174,7 @@ export const BookingsController = {
           id: bookingId,
           status
         }),
-        BOOKING_QUERIES.GET_BOOKER_EMAIL(connection, bookingId) as any
+        BOOKING_QUERIES.GET_BOOKER_EMAIL(connection, bookingId) as unknown as [{email: string}]
       ])
 
       if (email) sendMail(status, email)
