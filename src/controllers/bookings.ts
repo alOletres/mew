@@ -163,22 +163,21 @@ export const BookingsController = {
     try {
       const bookingId: number = req.params?.id as unknown as number
 
-      const [{email}]: any[] = await BOOKING_QUERIES.GET_BOOKER_EMAIL(connection, bookingId) as any
-
       const {status}: {status: EBookingStatuses} = req.body
 
       if (!bookingId) throw new ErrorException("Booking id must be supplied from the URL params.")
 
       if (!["pending", "approved", "rejected", "voided"].includes(status.toLowerCase())) throw new ErrorException("Status value should either be PENDING, APPROVED, REJECTED or VOIDED.")
 
-      const updateStatus = await BOOKING_QUERIES.UPDATE_BOOKING(connection, {
-        id: bookingId,
-        status
-      })
+      const [updateStatus, [{email}]] = await Promise.all([
+        BOOKING_QUERIES.UPDATE_BOOKING(connection, {
+          id: bookingId,
+          status
+        }),
+        BOOKING_QUERIES.GET_BOOKER_EMAIL(connection, bookingId) as any
+      ])
 
-      if (email) {
-        sendMail(status, email)
-      }
+      if (email) sendMail(status, email)
 
       if (checkType<IQueryOk>(updateStatus, "affectedRows")) return res.status(EHttpStatusCode.OK).send({
         message: "Booking status is successfully updated."
