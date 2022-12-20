@@ -21,4 +21,3 @@ export const REFRESH_TOKEN_SECRET: string | undefined = process.env.REFRESH_TOKE
 export const SALTROUNDS: string | undefined = process.env.SALTROUNDS
 export const MAILER_EMAIL: string | undefined = process.env.EMAIL
 export const MAILER_PASSWORD: string | undefined = process.env.PASSWORD
-  

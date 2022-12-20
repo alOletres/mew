@@ -66,6 +66,18 @@ export const BOOKING_QUERIES = {
       return returnError(connection, err)
     }
   },
+  GET_BOOKER_EMAIL: async (
+    connection: Connection,
+    bookingId: number
+  ): Promise<Query<any> | IError> => {
+    try {
+      const emailQuery: Query<any> = await connection.query(PRESET_QUERIES.GET_BOOKER_EMAIL, [bookingId])
+
+      return emailQuery
+    } catch (err) {
+      return returnError(connection, err)
+    }
+  },
   UPDATE_BOOKING: async (
     connection: Connection,
     details: {

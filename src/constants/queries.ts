@@ -26,6 +26,16 @@ const {
 } = DB_COLUMNS
 
 export const PRESET_QUERIES = {
+  GET_BOOKER_EMAIL: `
+    SELECT a.${email} FROM 
+    ${DB_TABLES.USERS} as a
+    INNER JOIN
+    ${DB_TABLES.BOOKINGS} as b
+    WHERE 
+    b.${bookingId}=?
+    AND
+    b.${booker}=a.${userId}
+  `,
   ADD_PAYMENT: `
     INSERT INTO ${DB_TABLES.PAYMENT}
     (${payment_type}, ${account_name}, ${account_number}, ${reference_number}, ${receipt})

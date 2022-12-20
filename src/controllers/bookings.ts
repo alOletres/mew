@@ -1,6 +1,6 @@
 import {Request, Response} from "express"
 import {Connection, Query} from "promise-mysql"
-import {ErrorException, catchError, checkType, hashPassword} from "./../utils"
+import {ErrorException, catchError, checkType, hashPassword, sendMail} from "./../utils"
 import {IBooking, IQueryOk, IUser, IDatesBooked, EBookingStatuses} from "./../types"
 import {BOOKING_QUERIES, USER_QUERIES} from "./../services"
 import {EHttpStatusCode} from "./../constants"
@@ -163,6 +163,8 @@ export const BookingsController = {
     try {
       const bookingId: number = req.params?.id as unknown as number
 
+      const [{email}]: any[] = await BOOKING_QUERIES.GET_BOOKER_EMAIL(connection, bookingId) as any
+
       const {status}: {status: EBookingStatuses} = req.body
 
       if (!bookingId) throw new ErrorException("Booking id must be supplied from the URL params.")
@@ -173,6 +175,10 @@ export const BookingsController = {
         id: bookingId,
         status
       })
+
+      if (email) {
+        sendMail(status, email)
+      }
 
       if (checkType<IQueryOk>(updateStatus, "affectedRows")) return res.status(EHttpStatusCode.OK).send({
         message: "Booking status is successfully updated."
