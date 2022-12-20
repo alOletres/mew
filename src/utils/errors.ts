@@ -10,7 +10,7 @@ export class ErrorException extends Error {
   
   constructor(
     message: string, 
-    code: number = EHttpStatusCode.FORBIDDEN, 
+    code: number = EHttpStatusCode.INTERNAL_SERVER_ERROR, 
     data?: object
   ) {
     super()
