@@ -26,7 +26,7 @@ export interface IBooking {
   type: TBookingType;
   user?: IUser | string;
   images?: Blob;
-  payment: IPayment | string;
+  payment?: IPayment | string;
   other?: object;
   receiptAttachment?: string[];
   userid?: number;

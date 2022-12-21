@@ -29,7 +29,7 @@ export const BookingsController = {
        * Add a payment if `payment` property is defined
        * from the payload
        */
-      if (details.payment) {
+      if (details.payment && details.type === "online") {
         const paymentPayload = typeof details.payment === "string"
           ? {
             type: JSON.parse(details.payment).payment_type,
