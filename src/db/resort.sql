@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 20, 2022 at 06:07 AM
+-- Generation Time: Dec 21, 2022 at 02:55 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -39,6 +39,7 @@ CREATE TABLE `m_bookings` (
   `payment_record` int(11) DEFAULT NULL,
   `booker` int(11) NOT NULL,
   `status` varchar(20) NOT NULL DEFAULT 'pending',
+  `x_reason` text DEFAULT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -47,8 +48,8 @@ CREATE TABLE `m_bookings` (
 -- Dumping data for table `m_bookings`
 --
 
-INSERT INTO `m_bookings` (`id`, `type`, `cottages`, `selected_date_from`, `selected_date_to`, `payment_record`, `booker`, `status`, `createdAt`, `updatedAt`) VALUES
-(1, '', '[1, 2]', '2022-12-15', '2022-12-17', 1, 20, 'pending', '2022-12-19 07:13:07', '2022-12-19 07:13:07');
+INSERT INTO `m_bookings` (`id`, `type`, `cottages`, `selected_date_from`, `selected_date_to`, `payment_record`, `booker`, `status`, `x_reason`, `createdAt`, `updatedAt`) VALUES
+(1, '', '[1, 2]', '2022-12-15', '2022-12-17', 1, 20, 'pending', NULL, '2022-12-19 07:13:07', '2022-12-19 07:13:07');
 
 -- --------------------------------------------------------
 
@@ -126,9 +127,9 @@ CREATE TABLE `m_users` (
 --
 
 INSERT INTO `m_users` (`id`, `role`, `firstname`, `lastname`, `address`, `mobile_number`, `email`, `password`, `refresh_token`, `createdAt`, `updatedAt`) VALUES
-(1, '[\"admin\"]', 'Dexter Louiee', 'Aniezz', 'Tawagan Surr', '+639383673348', 'louieaniez@gmail.com', '$2b$10$o907DGERuQeYgVP5F8r2wexdzWa1XluesznxW2/tbPMPGT3fvsYhW', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJsb3VpZWFuaWV6QGdtYWlsLmNvbSIsImZpcnN0bmFtZSI6IkRleHRlciBMb3VpZWUiLCJsYXN0bmFtZSI6IkFuaWV6eiIsIm1vYmlsZV9udW1iZXIiOiIrNjM5MzgzNjczMzQ4Iiwicm9sZSI6IltcImFkbWluXCJdIiwiY3JlYXRlZEF0IjoxNjcxNDMzMzkzNDAzLCJpYXQiOjE2NzE0MzMzOTN9.je00g68tb5brD6iRd1YS3CUhfSw1ThdtlbmRDCTA7wY', '2022-10-13 09:15:18', '2022-10-13 09:15:18'),
+(1, '[\"admin\"]', 'Dexter Louiee', 'Aniezz', 'Tawagan Surr', '+639383673348', 'louieaniez@gmail.com', '$2b$10$o907DGERuQeYgVP5F8r2wexdzWa1XluesznxW2/tbPMPGT3fvsYhW', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RuYW1lIjoiRGV4dGVyIExvdWllZSIsImxhc3RuYW1lIjoiQW5pZXp6Iiwicm9sZSI6IltcImFkbWluXCJdIiwibW9iaWxlX251bWJlciI6Iis2MzkzODM2NzMzNDgiLCJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiY3JlYXRlZEF0IjoxNjcxNTMyNzUwMDY1LCJpYXQiOjE2NzE1MzI3NTB9.nW3QayDpOEaIo2Jmcy_oonlYVfg2ZyLd7S9wXaTRE80', '2022-10-13 09:15:18', '2022-10-13 09:15:18'),
 (9, '[\"admin\"]', 'Dexter Louiee', 'Aniezz', 'address', '+639383673347', 'lodianiezzzzzz@gmail.com', '$2b$10$S.Ca6qXqEi7PY3O1.Fjw/eAi5piYxmluiqfDlC8b.zJypgluM4Cuu', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvZGlhbmllekBnbWFpbC5jb20iLCJjcmVhdGVkQXQiOjE2Njg1NjU1NjYwMTEsImlhdCI6MTY2ODU2NTU2Nn0.ldp2ZYRSuqZBSf948MbXJvMmRyDPHPVuawGKkLyFiOs', '2022-10-14 00:01:44', '2022-10-14 00:01:44'),
-(20, '[\'customer', 'postman', 'agent', 'internet', '09124278043', 'postman@test.com', '$2b$10$5Wydq0nW4aZjj7Tx2nnIdOlL/RSEkpmNMRt.xUfo4V9B/chbIDRNK', NULL, '2022-12-19 07:13:07', '2022-12-19 07:13:07');
+(20, '[\'customer', 'postman', 'agent', 'internet', '09124278043', 'lodianiez@gmail.com', '$2b$10$5Wydq0nW4aZjj7Tx2nnIdOlL/RSEkpmNMRt.xUfo4V9B/chbIDRNK', NULL, '2022-12-19 07:13:07', '2022-12-19 07:13:07');
 
 --
 -- Indexes for dumped tables
