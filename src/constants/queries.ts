@@ -26,6 +26,9 @@ const {
 } = DB_COLUMNS
 
 export const PRESET_QUERIES = {
+  LIST_PAYMENTS: `
+    SELECT * FROM ${DB_TABLES.PAYMENT}
+  `,
   GET_BOOKER_EMAIL: `
     SELECT a.${email} FROM 
     ${DB_TABLES.USERS} as a

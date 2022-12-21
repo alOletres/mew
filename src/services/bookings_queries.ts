@@ -23,6 +23,15 @@ interface IBook {
 const ConnectivityError = "Unable to connect to database."
 
 export const BOOKING_QUERIES = {
+  LIST_PAYMENTS: async (connection: Connection): Promise<Query<any> | IError> => {
+    try {
+      const payments: Query<any> = await connection.query(PRESET_QUERIES.LIST_PAYMENTS)
+
+      return payments
+    } catch (err) {
+      return returnError(connection, err)
+    }
+  },
   ADD_PAYMENT: async (
     connection: Connection,
     details: IPayment

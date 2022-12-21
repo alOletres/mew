@@ -1,7 +1,7 @@
 import {Request, Response} from "express"
 import {Connection, Query} from "promise-mysql"
-import {ErrorException, catchError, checkType, hashPassword, sendMail} from "./../utils"
-import {IBooking, IQueryOk, IUser, IDatesBooked, EBookingStatuses} from "./../types"
+import {ErrorException, catchError, checkType, hashPassword, sendMail, readFile} from "./../utils"
+import {IBooking, IQueryOk, IUser, IDatesBooked, EBookingStatuses, EBookingPaymentType} from "./../types"
 import {BOOKING_QUERIES, USER_QUERIES} from "./../services"
 import {EHttpStatusCode} from "./../constants"
 
@@ -204,6 +204,46 @@ export const BookingsController = {
       })
 
       if (!checkType<Query<any>>(list, "OkPacket")) throw new ErrorException("Something went wrong, please try again later.")
+    } catch (err) {
+      const error: ErrorException = err as ErrorException
+
+      connection.rollback()
+      catchError(error, res)
+    }
+  },
+  PAYMENTS_LIST: async (req: Request, res: Response) => {
+    const connection: Connection = req._config_.connection as Connection
+
+    interface IDBPayment {
+      id: number;
+      type: EBookingPaymentType;
+      account_name: string;
+      account_number: string;
+      reference_number: string;
+      receipt: string | string[];
+    }
+
+    try {
+      const list: IDBPayment[] = await BOOKING_QUERIES.LIST_PAYMENTS(connection) as unknown as IDBPayment[]
+    
+      const listWithImages = await Promise.all(list.map(async (item: IDBPayment) => {
+        if (item.receipt) {
+          const images: string[] = await Promise.all(JSON.parse(item.receipt as string).map(async (receipt: string) => {
+            const actualImage: Buffer = await readFile(receipt)
+
+            return Buffer.from(actualImage).toString("base64")
+          })) as unknown as string[]
+
+          item.receipt = images
+        }
+
+        return item
+      }))
+
+      res.status(EHttpStatusCode.OK).send({
+        message: "Payment list is successfully fetched.",
+        data: listWithImages
+      })
     } catch (err) {
       const error: ErrorException = err as ErrorException
 
