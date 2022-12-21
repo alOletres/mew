@@ -163,7 +163,7 @@ export const BookingsController = {
     try {
       const bookingId: number = req.params?.id as unknown as number
 
-      const {status}: {status: EBookingStatuses} = req.body
+      const {status, reason}: {status: EBookingStatuses; reason?: string;} = req.body
 
       if (!bookingId) throw new ErrorException("Booking id must be supplied from the URL params.")
 
@@ -172,6 +172,7 @@ export const BookingsController = {
       const [updateStatus, [{email}]] = await Promise.all([
         BOOKING_QUERIES.UPDATE_BOOKING(connection, {
           id: bookingId,
+          x_reason: reason,
           status
         }),
         BOOKING_QUERIES.GET_BOOKER_EMAIL(connection, bookingId) as unknown as [{email: string}]

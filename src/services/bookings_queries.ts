@@ -83,10 +83,17 @@ export const BOOKING_QUERIES = {
     details: {
       id: number;
       status: EBookingStatuses;
+      x_reason?: string;
     }
   ): Promise<IQueryOk | IError> => {
     try {
-      const query = await connection.query(PRESET_QUERIES.UPDATE_BOOKING_STATUS, [details.status, details.id])
+      const reason: string | null = details.status === "rejected" || details.status === "voided"
+        ? details.x_reason
+          ? details.x_reason
+          : null
+        : null
+
+      const query = await connection.query(PRESET_QUERIES.UPDATE_BOOKING_STATUS, [details.status, reason, details.id])
 
       return query
     } catch (err) {

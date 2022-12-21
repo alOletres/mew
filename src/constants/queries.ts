@@ -5,7 +5,7 @@ const {
   BOOKINGS: {
     cottages, selected_date_from, selected_date_to,
     payment_record, booker, status: bookingStatus, id: bookingId,
-    type: bookingType
+    type: bookingType, x_reason
   },
   USER: {
     refresh_token, email, role,
@@ -53,7 +53,7 @@ export const PRESET_QUERIES = {
   `,
   UPDATE_BOOKING_STATUS: `
     UPDATE ${DB_TABLES.BOOKINGS}
-    SET ${bookingStatus}=?
+    SET ${bookingStatus}=?, ${x_reason}=?
     WHERE ${bookingId}=?
   `,
   CREATE_USER: `

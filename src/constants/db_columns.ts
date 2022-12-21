@@ -13,6 +13,7 @@ export const DB_COLUMNS = {
     payment_record: "payment_record",
     booker: "booker",
     status: "status",
+    x_reason: "x_reason",
     ...timestampColumns
   },
   USER: {
