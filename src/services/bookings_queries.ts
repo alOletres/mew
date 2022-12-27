@@ -9,6 +9,7 @@ interface IPayment {
   account_number: string;
   reference_number?: string;
   receipt?: string;
+  amount?: number;
 }
 
 interface IBook {
@@ -42,7 +43,8 @@ export const BOOKING_QUERIES = {
       const values = [
         details.type, details.account_name,
         details.account_number,
-        details.reference_number, details.receipt
+        details.reference_number, details.receipt,
+        details.amount
       ]
 
       const query: IQueryOk = await connection.query(PRESET_QUERIES.ADD_PAYMENT, [...values])

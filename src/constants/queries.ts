@@ -21,7 +21,7 @@ const {
   PAYMENT: {
     type: payment_type, account_name,
     account_number, reference_number,
-    receipt
+    receipt, amount
   }
 } = DB_COLUMNS
 
@@ -41,8 +41,8 @@ export const PRESET_QUERIES = {
   `,
   ADD_PAYMENT: `
     INSERT INTO ${DB_TABLES.PAYMENT}
-    (${payment_type}, ${account_name}, ${account_number}, ${reference_number}, ${receipt})
-    VALUES (?, ?, ?, ?, ?)
+    (${payment_type}, ${account_name}, ${account_number}, ${reference_number}, ${receipt}, ${amount})
+    VALUES (?, ?, ?, ?, ?, ?)
   `,
   CREATE_COTTAGE: `
     INSERT INTO ${DB_TABLES.COTTAGES}

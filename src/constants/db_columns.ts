@@ -46,6 +46,7 @@ export const DB_COLUMNS = {
     account_number: "account_number",
     reference_number: "reference_number",
     receipt: "receipt",
+    amount: "amount",
     ...timestampColumns
   }
 }

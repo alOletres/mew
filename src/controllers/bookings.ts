@@ -35,12 +35,14 @@ export const BookingsController = {
             type: JSON.parse(details.payment).payment_type,
             account_name: JSON.parse(details.payment).accountName,
             account_number: JSON.parse(details.payment).accountNumber,
-            reference_number: JSON.parse(details.payment).reference
+            reference_number: JSON.parse(details.payment).reference,
+            amount: JSON.parse(details.payment).amount
           } : {
             type: details.payment.payment_type,
             account_name: details.payment.accountName,
             account_number: details.payment.accountNumber,
-            reference_number: details.payment.reference
+            reference_number: details.payment.reference,
+            amount: details.payment.amount
           }
         
         const payment = await BOOKING_QUERIES.ADD_PAYMENT(connection, {
