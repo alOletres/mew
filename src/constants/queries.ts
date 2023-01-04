@@ -66,7 +66,9 @@ export const PRESET_QUERIES = {
   `,
   EDIT_USER: `
     UPDATE ${DB_TABLES.USERS}
-    SET ${role}=?, ${firstname}=?, ${lastname}=?, ${address}=?, ${mobile_number}=?, ${email}=?, ${password}=?
+    SET 
+    ${role}=?, ${firstname}=?, ${lastname}=?, ${address}=?, 
+    ${mobile_number}=?, ${email}=?
     WHERE ${userId}=?
   `,
   LIST_USER: `
@@ -105,5 +107,23 @@ export const PRESET_QUERIES = {
   `,
   LIST_BOOKINGS: `
     SELECT * FROM ${DB_TABLES.BOOKINGS}
-  `
+  `,
+
+  LIST_REPORTS: `
+    SELECT * FROM ${DB_TABLES.BOOKINGS} as a 
+    INNER JOIN ${DB_TABLES.USERS} as b 
+    ON a.booker=b.id
+    INNER JOIN ${DB_TABLES.PAYMENT} as c 
+    ON a.payment_record=c.id 
+  `,
+
+  UPDATE_USER_PASSWORD: `
+    UPDATE ${DB_TABLES.USERS} 
+    SET ${password}=? WHERE id=?
+  `,
+
+  GET_USER_BY_ID: `
+    SELECT * FROM ${DB_TABLES.USERS} WHERE id=?
+  `,
+
 }

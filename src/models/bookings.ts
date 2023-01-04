@@ -13,6 +13,10 @@ app.post("/update/:id", BookingsController.UPDATE_BOOKING_STATUS)
 
 app.get("/list", BookingsController.BOOKING_LIST)
 
-app.get("/payments", BookingsController.PAYMENTS_LIST)
+app.get("/payments", BookingsController.PAYMENTS_LIST);
+
+// get reports
+app.get('/reports', BookingsController.LIST_REPORTS);
+
 
 export default app

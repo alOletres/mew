@@ -33,7 +33,8 @@ export const USER_QUERIES = {
     connection: Connection,
     {
       roles, firstname, lastname, id,
-      address, mobile_number, email, password
+      address, mobile_number, email
+      // , password
     }: IUser
   ): Promise<Query<any> | IError> => {
     try {
@@ -43,7 +44,7 @@ export const USER_QUERIES = {
 
       const response = await connection.query(
         PRESET_QUERIES.EDIT_USER,
-        [roles, firstname, lastname, address, mobile_number, email, password, id]
+        [roles, firstname, lastname, address, mobile_number, email, id]
       )
       
       connection.commit()
@@ -62,6 +63,38 @@ export const USER_QUERIES = {
       return response
     } catch (err) {
       return returnError(connection, err)
+    }
+  },
+
+  UPDATE_USER_PASSWORD: async (
+    connection: Connection,{
+    id,
+    password
+  }: IUser) => {
+    try {
+      const response = await connection.query(
+        PRESET_QUERIES.UPDATE_USER_PASSWORD, 
+        [password, id]
+      );
+      return response;
+
+    } catch (err) {
+      return returnError(connection, err);
+    }
+  },
+
+  GET_USER_BY_ID: async (connection: Connection, {
+    id
+  }: {id: number}): Promise<IError | IUser[]> => {
+    try {
+      const response: IUser[] = await connection.query(
+        PRESET_QUERIES.GET_USER_BY_ID,
+        [id]
+      );
+      return response;
+
+    } catch (err) {
+      return returnError(connection, err);
     }
   }
 }

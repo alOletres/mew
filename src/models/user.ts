@@ -10,6 +10,9 @@ app.post("/", UserController.CREATE_USER)
 app.put("/edit/:id", UserController.EDIT_USER)
 
 /** List All Users */
-app.get("/list", UserController.LIST_USER)
+app.get("/list", UserController.LIST_USER);
+
+/** edit user password */
+app.put("/edit/password/:id", UserController.UPDATE_USER_PASSWORD);
 
 export default app

@@ -119,5 +119,14 @@ export const BOOKING_QUERIES = {
     } catch (err) { 
       return returnError(connection, err)
     }
+  },
+
+  LIST_REPORTS: async (connection: Connection) => {
+    try {
+      const list: Query<any> = await connection.query(PRESET_QUERIES.LIST_REPORTS);
+      return list;
+    } catch (err) {
+      return returnError(connection, err);
+    }
   }
 }

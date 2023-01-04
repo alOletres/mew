@@ -4,6 +4,7 @@ import {ErrorException, catchError, checkType, hashPassword, sendMail, readFile}
 import {IBooking, IQueryOk, IUser, IDatesBooked, EBookingStatuses, EBookingPaymentType} from "./../types"
 import {BOOKING_QUERIES, USER_QUERIES} from "./../services"
 import {EHttpStatusCode} from "./../constants"
+import { isError } from '../utils/errors';
 
 export const BookingsController = {
   BOOK: async (req: Request, res: Response) => {
@@ -29,7 +30,7 @@ export const BookingsController = {
        * Add a payment if `payment` property is defined
        * from the payload
        */
-      if (details.payment && details.type === "online") {
+      if (details.payment && details.type === '"online"') {
         const paymentPayload = typeof details.payment === "string"
           ? {
             type: JSON.parse(details.payment).payment_type,
@@ -118,7 +119,12 @@ export const BookingsController = {
         const createdUser = await USER_QUERIES.CREATE_USER(connection, {
           ...userDetails,
           password: hashedPassword
-        })
+        });
+
+        if(isError(createdUser)) {
+          connection.rollback();
+          throw new ErrorException(createdUser.message ?? "Something went wrong with create user");
+        }
 
         const userid = checkType<IQueryOk>(createdUser, ["insertId", "affectedRows"])
           ? createdUser.insertId
@@ -153,6 +159,8 @@ export const BookingsController = {
         message: "Something went wrong, please try again later."
       })
     } catch (err: unknown) {
+      console.log(err);
+      
       const error: ErrorException = err as ErrorException
 
       connection.rollback()
@@ -208,7 +216,8 @@ export const BookingsController = {
       if (!checkType<Query<any>>(list, "OkPacket")) throw new ErrorException("Something went wrong, please try again later.")
     } catch (err) {
       const error: ErrorException = err as ErrorException
-
+      console.log(err);
+      
       connection.rollback()
       catchError(error, res)
     }
@@ -251,6 +260,26 @@ export const BookingsController = {
 
       connection.rollback()
       catchError(error, res)
+    }
+  },
+
+  LIST_REPORTS: async (req: Request, res: Response) => {
+    const connection: Connection = req._config_.connection as Connection
+
+    try {
+      connection.beginTransaction();
+      const list = await BOOKING_QUERIES.LIST_REPORTS(connection);
+      connection.commit();
+
+      res.status(EHttpStatusCode.OK).send({
+        message: "Report is succesfully fetched.",
+        data: list
+      });
+ 
+    } catch (err) {
+      const error: ErrorException = err as ErrorException;
+      connection.rollback();
+      catchError(error, res);
     }
   }
 }
