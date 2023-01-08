@@ -25,7 +25,7 @@ export const AuthController = {
       }
 
       if (loginResponse && isErrorTyped(loginResponse) && loginResponse.error) throw new ErrorException(loginResponse.message ?? "Internal Server Error")
-      if (!loginResponse) throw new ErrorException("Username or password is incorrect.", EHttpStatusCode.FORBIDDEN)
+      if (!loginResponse) throw new ErrorException("Username or password is incorrect.", EHttpStatusCode.UNAUTHORIZED)
 
       res.status(EHttpStatusCode.OK).send({
         message: "You are successfully logged in.",

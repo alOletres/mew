@@ -110,7 +110,30 @@ export const PRESET_QUERIES = {
   `,
 
   LIST_REPORTS: `
-    SELECT * FROM ${DB_TABLES.BOOKINGS} as a 
+    SELECT 
+    a.id,
+    a.type,
+    a.cottages,
+    a.selected_date_from,
+    a.selected_date_to,
+    a.payment_record,
+    a.booker,
+    a.status,
+    a.x_reason,
+    b.role,
+    b.firstname,
+    b.lastname,
+    b.address,
+    b.mobile_number,
+    b.email,
+    a.createdAt,
+    c.account_name,
+    c.account_number,
+    c.reference_number,
+    c.receipt,
+    c.amount
+
+    FROM ${DB_TABLES.BOOKINGS} as a 
     INNER JOIN ${DB_TABLES.USERS} as b 
     ON a.booker=b.id
     INNER JOIN ${DB_TABLES.PAYMENT} as c 

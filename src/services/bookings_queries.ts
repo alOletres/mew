@@ -126,6 +126,8 @@ export const BOOKING_QUERIES = {
       const list: Query<any> = await connection.query(PRESET_QUERIES.LIST_REPORTS);
       return list;
     } catch (err) {
+      console.log(err);
+      
       return returnError(connection, err);
     }
   }

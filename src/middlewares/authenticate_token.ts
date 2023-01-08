@@ -8,9 +8,9 @@ export const authToken = (req: Request, res: Response, next: NextFunction) => {
 		 * 
 		 * Before anything else, check for landing headers
 		 */
-		const landingHeader: undefined | Boolean = req.headers && req.headers["landing"] as unknown as Boolean
+		const landingHeader: undefined | Boolean | string = req.headers && req.headers["landing"] as unknown as Boolean
 
-		if (landingHeader && Boolean(landingHeader) == true) return next()
+		if (landingHeader && Boolean(landingHeader) == true || typeof landingHeader === "string" && landingHeader == 'true') return next()
 		
 		/**
 		 * 

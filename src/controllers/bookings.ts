@@ -8,6 +8,7 @@ import { isError } from '../utils/errors';
 
 export const BookingsController = {
   BOOK: async (req: Request, res: Response) => {
+    
     const connection: Connection = req._config_.connection as Connection
 
     try {
@@ -57,6 +58,38 @@ export const BookingsController = {
       }
 
       /**
+       * payment walkin 
+       */
+
+      if(details.payment && details.type === '"walkin"') {
+        const paymentPayload = typeof details.payment === "string" 
+          ? {
+            type: JSON.parse(details.payment).payment_type,
+            account_name: '',
+            account_number: '',
+            reference_number: '',
+            amount: JSON.parse(details.payment).amount,
+            receipt: ''
+          }   
+          : {
+            type: details.payment.payment_type,
+            account_name: '',
+            account_number: '',
+            reference_number: '',
+            amount: details.payment.amount,
+            receipt: ''
+          };
+
+        const payment = await BOOKING_QUERIES.ADD_PAYMENT(connection, {
+          ...paymentPayload
+        });
+        
+        paymentId = checkType<IQueryOk>(payment, "insertId")
+          ? payment.insertId
+          : null
+      }
+
+      /**
        * 
        * Extract dates from and to
        */
@@ -77,7 +110,7 @@ export const BookingsController = {
           dateTo: dates.to,
           paymentId,
           user: details.userid
-        })
+        });
 
         if (checkType<IQueryOk>(book, "affectedRows")) {
           if (book.affectedRows > 0) {
