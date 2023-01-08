@@ -1,9 +1,11 @@
 import {Request, Response} from "express"
-import {ErrorException, catchError, comparePassword, hashPassword, isError} from "./../utils"
+import {ErrorException, catchError, comparePassword, hashPassword, isError, sendMail} from "./../utils"
 import {IUser, TUserRole} from "./../types"
 import {USER_QUERIES} from "./../services"
 import {Connection} from 'promise-mysql';
 import {EHttpStatusCode} from "./../constants"
+import { SendMailOptions } from 'nodemailer';
+import { MAILER_EMAIL } from '../configs/secrets';
 
 const checkRole = (role: TUserRole[]): role is TUserRole[] => {
   return !role.includes("admin") 
@@ -158,6 +160,23 @@ export const UserController = {
       });     
 
     } catch(err) {
+      const error: ErrorException = err as ErrorException;
+      catchError(error, res);
+    }
+  },
+
+  CLIENT_EMAIL: async (req: Request, res: Response) => {
+    try {
+      
+      const {from, html}: SendMailOptions = req.body;
+
+      if (from && html) sendMail({
+        from,
+        to: MAILER_EMAIL,
+        html
+      } as SendMailOptions);
+
+    } catch (err) {
       const error: ErrorException = err as ErrorException;
       catchError(error, res);
     }

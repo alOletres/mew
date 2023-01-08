@@ -5,6 +5,8 @@ import {IBooking, IQueryOk, IUser, IDatesBooked, EBookingStatuses, EBookingPayme
 import {BOOKING_QUERIES, USER_QUERIES} from "./../services"
 import {EHttpStatusCode} from "./../constants"
 import { isError } from '../utils/errors';
+import { SendMailOptions } from 'nodemailer';
+import { MAILER_EMAIL } from '../configs/secrets';
 
 export const BookingsController = {
   BOOK: async (req: Request, res: Response) => {
@@ -221,7 +223,21 @@ export const BookingsController = {
         BOOKING_QUERIES.GET_BOOKER_EMAIL(connection, bookingId) as unknown as [{email: string}]
       ])
 
-      if (email) sendMail(status, email)
+      
+    const emailBody = status === "approved" || status === "rejected" || status === "voided"
+      ? `Hello! The purpose of this email is to inform you that your booking reservation has been ${status}.`
+      : status === "pending"
+      ? `Hello! Your booking reservation is currently in ${status} state.`
+      : ""
+
+
+
+      if (email) sendMail({
+        from: MAILER_EMAIL,
+        to: email,
+        subject: "RVS Resort Notification",
+        html: emailBody
+      } as SendMailOptions);
 
       if (checkType<IQueryOk>(updateStatus, "affectedRows")) return res.status(EHttpStatusCode.OK).send({
         message: "Booking status is successfully updated."
