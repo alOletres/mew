@@ -104,19 +104,20 @@ export const BookingsController = {
        * If `userid` property is defined, proceed directly
        * without creating a new user
        */
-      if (details.userid) {
+      
+      if (String(details.userid) !== 'null') {
         const book = await BOOKING_QUERIES.CREATE_BOOKINGS(connection, {
           type: details.type,
           cottages: typeof details.cottages === "string" ? details.cottages : JSON.stringify(details.cottages),
           dateFrom: dates.from,
           dateTo: dates.to,
           paymentId,
-          user: details.userid
+          user: details.userid as number
         });
 
         if (checkType<IQueryOk>(book, "affectedRows")) {
           if (book.affectedRows > 0) {
-            connection.commit()
+            connection.commit();
             return res.status(EHttpStatusCode.OK).send({
               message: "Booking is successfully created."
             })
@@ -183,7 +184,7 @@ export const BookingsController = {
           if (book.affectedRows > 0) {
             connection.commit()
             return res.status(EHttpStatusCode.OK).send({
-              message: "Booking is successfully created."
+              message: "Booking is successfully created"
             })
           }
         }
@@ -195,10 +196,10 @@ export const BookingsController = {
       })
     } catch (err: unknown) {
       console.log(err);
-      
+       connection.rollback()
       const error: ErrorException = err as ErrorException
 
-      connection.rollback()
+     
       catchError(error, res)
     }
   },
