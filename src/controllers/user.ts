@@ -176,6 +176,12 @@ export const UserController = {
         html
       } as SendMailOptions);
 
+      res.status(EHttpStatusCode.OK).send({
+        message: "Sucessfully sent!, Thank you for contacting us!",
+        status: EHttpStatusCode.OK,
+        stattusText: "OK"
+      });
+
     } catch (err) {
       const error: ErrorException = err as ErrorException;
       catchError(error, res);

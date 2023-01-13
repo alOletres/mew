@@ -16,6 +16,6 @@ app.get("/list", UserController.LIST_USER);
 app.put("/edit/password/:id", UserController.UPDATE_USER_PASSWORD);
 
 /** client send email in contact us */
-app.post("contactus", UserController.CLIENT_EMAIL);
+app.post("/contactus", UserController.CLIENT_EMAIL);
 
 export default app
