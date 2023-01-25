@@ -104,8 +104,8 @@ export const BookingsController = {
        * If `userid` property is defined, proceed directly
        * without creating a new user
        */
-      
-      if (String(details.userid) !== 'null') {
+
+      if (details.userid && String(details.userid) !== 'null') {
         const book = await BOOKING_QUERIES.CREATE_BOOKINGS(connection, {
           type: details.type,
           cottages: typeof details.cottages === "string" ? details.cottages : JSON.stringify(details.cottages),

@@ -1,4 +1,4 @@
-export type TUserRole = "admin" | "customer" | "manager" | "booking_agent"
+export type TUserRole = "admin" | "customer" | "manager" | "booking-agent"
 
 export interface IUser {
   id?: number;

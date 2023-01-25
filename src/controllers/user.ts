@@ -11,7 +11,7 @@ const checkRole = (role: TUserRole[]): role is TUserRole[] => {
   return !role.includes("admin") 
       || !role.includes("customer") 
       || !role.includes("manager")
-      || !role.includes("booking_agent")
+      || !role.includes("booking-agent")
 }
 
 export const UserController = {

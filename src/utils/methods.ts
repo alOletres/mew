@@ -27,7 +27,7 @@ export const sendMail = ({
     html
   }
 
-  EmailTransporter.sendMail(options)
+  EmailTransporter.sendMail(options);
 }
 
 export const readFile = async (filePath: string) => {
