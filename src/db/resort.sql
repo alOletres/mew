@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 13, 2023 at 01:59 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 7.4.29
+-- Generation Time: Mar 02, 2023 at 12:39 PM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -20,10 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `resort`
 --
-
 CREATE DATABASE resort;
 USE resort;
-
 -- --------------------------------------------------------
 
 --
@@ -39,9 +38,9 @@ CREATE TABLE `m_bookings` (
   `payment_record` int(11) DEFAULT NULL,
   `booker` int(11) NOT NULL,
   `status` varchar(20) NOT NULL DEFAULT 'pending',
-  `x_reason` text DEFAULT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
+  `x_reason` text,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -51,17 +50,17 @@ CREATE TABLE `m_bookings` (
 INSERT INTO `m_bookings` (`id`, `type`, `cottages`, `selected_date_from`, `selected_date_to`, `payment_record`, `booker`, `status`, `x_reason`, `createdAt`, `updatedAt`) VALUES
 (4, '\"online\"', '[5]', '2022-01-01', '2022-01-01', 2, 23, 'approved', NULL, '2022-01-02 11:13:04', '2023-01-02 11:13:04'),
 (6, '\"online\"', '[4]', '2023-01-03', '2023-01-05', 3, 25, 'approved', NULL, '2023-01-04 01:05:09', '2023-01-04 01:05:09'),
-(7, '\"walkin\"', '[4]', '2023-01-06', '2023-01-07', 5, 27, 'pending', NULL, '2023-01-07 06:56:45', '2023-01-07 06:56:45'),
-(8, '\"walkin\"', '[5]', '2023-01-06', '2023-01-07', 6, 28, 'pending', NULL, '2023-01-07 06:59:08', '2023-01-07 06:59:08'),
-(9, '\"online\"', '[4]', '2023-01-07', '2023-01-07', 11, 30, 'pending', NULL, '2023-01-08 10:50:06', '2023-01-08 10:50:06'),
-(10, '\"online\"', '[5]', '2023-01-08', '2023-01-08', 12, 30, 'pending', NULL, '2023-01-08 12:19:51', '2023-01-08 12:19:51'),
-(11, '\"online\"', '[4]', '2023-01-11', '2023-01-11', 13, 0, 'pending', NULL, '2023-01-12 13:25:50', '2023-01-12 13:25:50'),
+(7, '\"walkin\"', '[4]', '2023-01-06', '2023-01-07', 5, 27, 'approved', NULL, '2023-01-07 06:56:45', '2023-01-07 06:56:45'),
+(8, '\"walkin\"', '[5]', '2023-01-06', '2023-01-07', 6, 28, 'approved', NULL, '2023-01-07 06:59:08', '2023-01-07 06:59:08'),
+(9, '\"online\"', '[4]', '2023-01-07', '2023-01-07', 11, 30, 'approved', NULL, '2023-01-08 10:50:06', '2023-01-08 10:50:06'),
+(10, '\"online\"', '[5]', '2023-01-08', '2023-01-08', 12, 30, 'approved', NULL, '2023-01-08 12:19:51', '2023-01-08 12:19:51'),
+(11, '\"online\"', '[4]', '2023-01-11', '2023-01-11', 13, 0, 'approved', NULL, '2023-01-12 13:25:50', '2023-01-12 13:25:50'),
 (12, '\"online\"', '[4]', '2023-01-11', '2023-01-11', 14, 0, 'pending', NULL, '2023-01-12 13:35:48', '2023-01-12 13:35:48'),
-(13, '\"online\"', '[5]', '2023-01-11', '2023-01-11', 15, 0, 'pending', NULL, '2023-01-12 13:44:40', '2023-01-12 13:44:40'),
+(13, '\"online\"', '[5]', '2023-01-11', '2023-01-11', 15, 0, 'approved', NULL, '2023-01-12 13:44:40', '2023-01-12 13:44:40'),
 (14, '\"online\"', '[5,5]', '2023-01-11', '2023-01-11', 16, 0, 'pending', NULL, '2023-01-12 13:46:18', '2023-01-12 13:46:18'),
 (15, '\"online\"', '[5,5,5]', '2023-01-11', '2023-01-11', 17, 31, 'pending', NULL, '2023-01-12 13:49:28', '2023-01-12 13:49:28'),
-(16, '\"online\"', '[5]', '2023-01-11', '2023-01-11', 18, 34, 'pending', NULL, '2023-01-12 14:03:12', '2023-01-12 14:03:12'),
-(17, '\"online\"', '[5,4]', '2023-01-11', '2023-01-11', 19, 30, 'pending', NULL, '2023-01-12 14:07:01', '2023-01-12 14:07:01');
+(16, '\"online\"', '[5]', '2023-01-11', '2023-01-11', 18, 34, 'approved', NULL, '2023-01-12 14:03:12', '2023-01-12 14:03:12'),
+(17, '\"online\"', '[5,4]', '2023-01-11', '2023-01-11', 19, 30, 'approved', NULL, '2023-01-12 14:07:01', '2023-01-12 14:07:01');
 
 -- --------------------------------------------------------
 
@@ -76,10 +75,10 @@ CREATE TABLE `m_cottages` (
   `description` text NOT NULL,
   `capacity` varchar(50) NOT NULL,
   `price` double(6,2) NOT NULL,
-  `is_available` tinyint(1) NOT NULL DEFAULT 1,
-  `images` text DEFAULT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
+  `is_available` tinyint(1) NOT NULL DEFAULT '1',
+  `images` text,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -103,10 +102,10 @@ CREATE TABLE `m_payment_records` (
   `account_name` varchar(30) DEFAULT NULL,
   `account_number` varchar(30) DEFAULT NULL,
   `reference_number` varchar(100) DEFAULT NULL,
-  `receipt` text DEFAULT NULL,
+  `receipt` text,
   `amount` decimal(10,2) NOT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -143,9 +142,9 @@ CREATE TABLE `m_users` (
   `mobile_number` varchar(15) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
-  `refresh_token` text DEFAULT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
+  `refresh_token` text,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -153,7 +152,7 @@ CREATE TABLE `m_users` (
 --
 
 INSERT INTO `m_users` (`id`, `role`, `firstname`, `lastname`, `address`, `mobile_number`, `email`, `password`, `refresh_token`, `createdAt`, `updatedAt`) VALUES
-(1, '[\"admin\"]', 'Dexter Louiee', 'Aniezz', 'Tawagan Surr', '+639383673348', 'louieaniez@gmail.com', '$2b$10$o907DGERuQeYgVP5F8r2wexdzWa1XluesznxW2/tbPMPGT3fvsYhW', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RuYW1lIjoiRGV4dGVyIExvdWllZSIsImxhc3RuYW1lIjoiQW5pZXp6Iiwicm9sZSI6IltcImFkbWluXCJdIiwibW9iaWxlX251bWJlciI6Iis2MzkzODM2NzMzNDgiLCJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiY3JlYXRlZEF0IjoxNjczMTczMjAyMTMzLCJpYXQiOjE2NzMxNzMyMDJ9.huEXtsLw59z1E5KJk1fk6RGlRWCyFwebaVVhx4K0kyw', '2022-10-13 09:15:18', '2022-10-13 09:15:18'),
+(1, '[\"admin\"]', 'Dexter Louiee', 'Aniezz', 'Tawagan Surr', '+639383673348', 'louieaniez@gmail.com', '$2b$10$o907DGERuQeYgVP5F8r2wexdzWa1XluesznxW2/tbPMPGT3fvsYhW', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RuYW1lIjoiRGV4dGVyIExvdWllZSIsImxhc3RuYW1lIjoiQW5pZXp6Iiwicm9sZSI6IltcImFkbWluXCJdIiwibW9iaWxlX251bWJlciI6Iis2MzkzODM2NzMzNDgiLCJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiY3JlYXRlZEF0IjoxNjc3NTUwMTY2NTgyLCJpYXQiOjE2Nzc1NTAxNjZ9.wnPVHQL6JPj21Tsw8R6ltZ3fFYYmR0uICpReg8G_szw', '2022-10-13 09:15:18', '2022-10-13 09:15:18'),
 (9, '[\"admin\"]', 'Dexter Louiee', 'Aniezz', 'address', '+639383673347', 'lodianiezzzzzz@gmail.com', '$2b$10$S.Ca6qXqEi7PY3O1.Fjw/eAi5piYxmluiqfDlC8b.zJypgluM4Cuu', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvZGlhbmllekBnbWFpbC5jb20iLCJjcmVhdGVkQXQiOjE2Njg1NjU1NjYwMTEsImlhdCI6MTY2ODU2NTU2Nn0.ldp2ZYRSuqZBSf948MbXJvMmRyDPHPVuawGKkLyFiOs', '2022-10-14 00:01:44', '2022-10-14 00:01:44'),
 (23, '[\"customer\"]', 'alejandro', 'oletres', 'tukuran', NULL, 'alejandrooletres', '$2b$10$bhDnhEvh0s/A.YemQCAu9Oqw09a582Tupq0VexJErEnqBEf3aqN82', NULL, '2023-01-02 11:13:04', '2023-01-02 11:13:04'),
 (24, '[\"customer\"]', 'alejandro', 'oletres', 'tukuran ', '00000000', 'alejanwwdrooletres@gmail.com', '$2b$10$cbq/5odeQHCd7GXntZeVqucxkXNzYNXpZgzwo.6/TY9f4QflhRDoi', NULL, '2023-01-03 13:12:09', '2023-01-03 13:12:09'),
