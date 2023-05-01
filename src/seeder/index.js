@@ -48,8 +48,8 @@ const createBookingData = async () => {
 			roles: "customer",
 		},
 		dates: {
-			from: new Date(),
-			to: new Date(),
+			from: new Date("2023-03-18 20:50:20"),
+			to: new Date("2023-03-18 20:50:20"),
 		},
 		payment: {
 			accountName: `${firstname} ${lastname}`,

@@ -1,190 +1,248 @@
-import {Request, Response} from "express"
-import {ErrorException, catchError, comparePassword, hashPassword, isError, sendMail} from "./../utils"
-import {IUser, TUserRole} from "./../types"
-import {USER_QUERIES} from "./../services"
-import {Connection} from 'promise-mysql';
-import {EHttpStatusCode} from "./../constants"
-import { SendMailOptions } from 'nodemailer';
-import { MAILER_EMAIL } from '../configs/secrets';
+import { Request, Response } from "express";
+import {
+	ErrorException,
+	catchError,
+	comparePassword,
+	hashPassword,
+	isError,
+	sendMail,
+} from "./../utils";
+import { IUser, TUserRole } from "./../types";
+import { USER_QUERIES } from "./../services";
+import { Connection } from "promise-mysql";
+import { EHttpStatusCode } from "./../constants";
+import { SendMailOptions } from "nodemailer";
+import { MAILER_EMAIL } from "../configs/secrets";
 
 const checkRole = (role: TUserRole[]): role is TUserRole[] => {
-  return !role.includes("admin") 
-      || !role.includes("customer") 
-      || !role.includes("manager")
-      || !role.includes("booking-agent")
-}
+	return (
+		!role.includes("admin") ||
+		!role.includes("customer") ||
+		!role.includes("manager") ||
+		!role.includes("booking-agent")
+	);
+};
 
 export const UserController = {
-  CREATE_USER: async (req: Request, res: Response) => {
-    try {
-      const connection: Connection = req._config_.connection as Connection
-      
-      const {
-        roles, firstname, lastname,
-        address, mobile_number, email,
-        password
-      }: IUser = req.body
+	CREATE_USER: async (req: Request, res: Response) => {
+		try {
+			const connection: Connection = req._config_.connection as Connection;
 
-      const transformedRoles: TUserRole[] = JSON.parse(roles).map((item: TUserRole): TUserRole => item.toLocaleLowerCase() as TUserRole)
+			const {
+				roles,
+				firstname,
+				lastname,
+				address,
+				mobile_number,
+				email,
+				password,
+			}: IUser = req.body;
 
-      /** Check role */
-      if (!transformedRoles.length) throw new ErrorException("User role should not be null.")
-      if (!checkRole(transformedRoles)) throw new ErrorException("Roles should only include the following values: admin, customer or staff.")
+			const transformedRoles: TUserRole[] = JSON.parse(roles).map(
+				(item: TUserRole): TUserRole => item.toLocaleLowerCase() as TUserRole
+			);
 
-      /** Step 1: hash user's password */
-      const hashedPassword: string = hashPassword(password)
+			/** Check role */
+			if (!transformedRoles.length)
+				throw new ErrorException("User role should not be null.");
+			if (!checkRole(transformedRoles))
+				throw new ErrorException(
+					"Roles should only include the following values: admin, customer or staff."
+				);
 
-      /** Step 2: save data to database */
-      const createUserResponse = await USER_QUERIES.CREATE_USER(connection, {
-        roles, firstname, lastname, address,
-        mobile_number, email, password: hashedPassword
-      })
+			/** Step 1: hash user's password */
+			const hashedPassword: string = hashPassword(password);
 
-      if (isError(createUserResponse)) throw new ErrorException(createUserResponse.message ?? "Something went wrong, please check your data.")
+			/** Step 2: save data to database */
+			const createUserResponse = await USER_QUERIES.CREATE_USER(connection, {
+				roles,
+				firstname,
+				lastname,
+				address,
+				mobile_number,
+				email,
+				password: hashedPassword,
+			});
 
-      res.status(EHttpStatusCode.OK).send({
-        message: "User is successfully created!"
-      })
-    } catch (err) {
-      const error: ErrorException = err as ErrorException
+			if (isError(createUserResponse))
+				throw new ErrorException(
+					createUserResponse.message ??
+						"Something went wrong, please check your data."
+				);
 
-      catchError(error, res)
-    }
-  },
-  EDIT_USER: async (req: Request, res: Response) => {
-    try {
-      const connection: Connection = req._config_.connection as Connection
-      const id: number | undefined = req.params?.id as unknown as number 
+			res.status(EHttpStatusCode.OK).send({
+				message: "User is successfully created!",
+			});
+		} catch (err) {
+			const error: ErrorException = err as ErrorException;
 
-      if (!id) throw new ErrorException("User ID is missing from request params.")
+			catchError(error, res);
+		}
+	},
+	EDIT_USER: async (req: Request, res: Response) => {
+		try {
+			const connection: Connection = req._config_.connection as Connection;
+			const id: number | undefined = req.params?.id as unknown as number;
 
-      const {
-        roles, firstname, lastname,
-        address, mobile_number, email,
-        // password
-      }: IUser = req.body
+			if (!id)
+				throw new ErrorException("User ID is missing from request params.");
 
-      const transformedRoles: TUserRole[] = JSON.parse(roles).map((item: TUserRole): TUserRole => item.toLocaleLowerCase() as TUserRole)
+			const {
+				roles,
+				firstname,
+				lastname,
+				address,
+				mobile_number,
+				email,
+			}: // password
+			IUser = req.body;
 
-      /** Check role */
-      if (!transformedRoles.length) throw new ErrorException("User role should not be null.")
-      if (!checkRole(transformedRoles)) throw new ErrorException("Roles should only include the following values: admin, customer or staff.")
+			const transformedRoles: TUserRole[] = JSON.parse(roles).map(
+				(item: TUserRole): TUserRole => item.toLocaleLowerCase() as TUserRole
+			);
 
-      /** Step 1: hash user's password */
-      // const hashedPassword: string = hashPassword(password)
+			/** Check role */
+			if (!transformedRoles.length)
+				throw new ErrorException("User role should not be null.");
+			if (!checkRole(transformedRoles))
+				throw new ErrorException(
+					"Roles should only include the following values: admin, customer or staff."
+				);
 
-      /** Step 2: save data to database */
-      const editUserResponse = await USER_QUERIES.EDIT_USER(connection, {
-        roles, firstname, lastname, address, id,
-        mobile_number, email
-        // password: hashedPassword
-      } as IUser)
+			/** Step 1: hash user's password */
+			// const hashedPassword: string = hashPassword(password)
 
-      if (isError(editUserResponse)) throw new ErrorException(editUserResponse.message ?? "Something went wrong, please check your data.")
+			/** Step 2: save data to database */
+			const editUserResponse = await USER_QUERIES.EDIT_USER(connection, {
+				roles,
+				firstname,
+				lastname,
+				address,
+				id,
+				mobile_number,
+				email,
+				// password: hashedPassword
+			} as IUser);
 
-      res.status(EHttpStatusCode.OK).send({
-        message: "User is successfully updated!"
-      })
-    } catch (err) {
-      const error: ErrorException = err as ErrorException
+			if (isError(editUserResponse))
+				throw new ErrorException(
+					editUserResponse.message ??
+						"Something went wrong, please check your data."
+				);
 
-      catchError(error, res)
-    }
-  },
-  LIST_USER: async (req: Request, res: Response) => {
-    try {
-      const connection: Connection = req._config_.connection as Connection
+			res.status(EHttpStatusCode.OK).send({
+				message: "User is successfully updated!",
+			});
+		} catch (err) {
+			const error: ErrorException = err as ErrorException;
 
-      const list = await USER_QUERIES.LIST_USER(connection)
+			catchError(error, res);
+		}
+	},
+	LIST_USER: async (req: Request, res: Response) => {
+		try {
+			const connection: Connection = req._config_.connection as Connection;
 
-      res.status(EHttpStatusCode.OK).send({
-        message: "Data is fetched succesfully!",
-        data: list
-      })
-    } catch (err) {
-      const error: ErrorException = err as ErrorException
+			const list = await USER_QUERIES.LIST_USER(connection);
 
-      catchError(error, res)
-    }
-  },
+			res.status(EHttpStatusCode.OK).send({
+				message: "Data is fetched succesfully!",
+				data: list,
+			});
+		} catch (err) {
+			const error: ErrorException = err as ErrorException;
 
-  UPDATE_USER_PASSWORD: async (req: Request, res: Response) => {
-    try {
+			catchError(error, res);
+		}
+	},
 
-      const {
-        current_password, 
-        new_password
-      }: {id: number, current_password: string, new_password: string} = req.body;
+	UPDATE_USER_PASSWORD: async (req: Request, res: Response) => {
+		try {
+			const {
+				current_password,
+				new_password,
+			}: { id: number; current_password: string; new_password: string } =
+				req.body;
 
-      const connection: Connection = req._config_.connection as Connection;
-      
-      if(!current_password || !new_password) throw new ErrorException("Something went wrong in payload");
+			const connection: Connection = req._config_.connection as Connection;
 
-      connection.beginTransaction();
+			if (!current_password || !new_password)
+				throw new ErrorException("Something went wrong in payload");
 
-      const id: number = req.params.id as unknown as number ;
+			connection.beginTransaction();
 
-      if(!id) throw new ErrorException("'id' is missing in params");
-      
-      /**
-       * step 1 check if the current password is equal to hash password in database
-       */
+			const id: number = req.params.id as unknown as number;
 
-      const user_list = await USER_QUERIES.GET_USER_BY_ID(connection, {id});
+			if (!id) throw new ErrorException("'id' is missing in params");
 
-      if(isError(user_list)) {
-        connection.rollback();
-        throw new ErrorException(user_list.message ?? "Something went wrong in fetching user by id");
-      }
+			/**
+			 * step 1 check if the current password is equal to hash password in database
+			 */
 
-      const isEqual_password = comparePassword(current_password, user_list[0].password);
+			const user_list = await USER_QUERIES.GET_USER_BY_ID(connection, { id });
 
-      if(!isEqual_password) throw new ErrorException("Current password is incorrect");
+			if (isError(user_list)) {
+				connection.rollback();
+				throw new ErrorException(
+					user_list.message ?? "Something went wrong in fetching user by id"
+				);
+			}
 
-      const nw_pwrd = hashPassword(new_password);
-      
-      if(!nw_pwrd) throw new ErrorException("Please provide new password");
+			const isEqual_password = comparePassword(
+				current_password,
+				user_list[0].password
+			);
 
-      const user_response = await USER_QUERIES.UPDATE_USER_PASSWORD(connection, {
-        id,
-        password: nw_pwrd
-      } as IUser);
+			if (!isEqual_password)
+				throw new ErrorException("Current password is incorrect");
 
-      if(isError(user_response)) {
-        connection.rollback();
-        throw new ErrorException(user_response.message ?? "Something went wrong");
-      }
+			const nw_pwrd = hashPassword(new_password);
 
-      res.status(EHttpStatusCode.OK).send({
-        message: "Password succesfully updated!"
-      });     
+			if (!nw_pwrd) throw new ErrorException("Please provide new password");
 
-    } catch(err) {
-      const error: ErrorException = err as ErrorException;
-      catchError(error, res);
-    }
-  },
+			const user_response = await USER_QUERIES.UPDATE_USER_PASSWORD(
+				connection,
+				{
+					id,
+					password: nw_pwrd,
+				} as IUser
+			);
 
-  CLIENT_EMAIL: async (req: Request, res: Response) => {
-    try {
-      
-      const {from, html}: SendMailOptions = req.body;
+			if (isError(user_response)) {
+				connection.rollback();
+				throw new ErrorException(
+					user_response.message ?? "Something went wrong"
+				);
+			}
 
-      if (from && html) sendMail({
-        from,
-        to: MAILER_EMAIL,
-        html
-      } as SendMailOptions);
+			res.status(EHttpStatusCode.OK).send({
+				message: "Password succesfully updated!",
+			});
+		} catch (err) {
+			const error: ErrorException = err as ErrorException;
+			catchError(error, res);
+		}
+	},
 
-      res.status(EHttpStatusCode.OK).send({
-        message: "Sucessfully sent!, Thank you for contacting us!",
-        status: EHttpStatusCode.OK,
-        stattusText: "OK"
-      });
+	CLIENT_EMAIL: async (req: Request, res: Response) => {
+		try {
+			const { from, html }: SendMailOptions = req.body;
 
-    } catch (err) {
-      const error: ErrorException = err as ErrorException;
-      catchError(error, res);
-    }
-  }
-}
+			if (from && html)
+				sendMail({
+					from,
+					to: MAILER_EMAIL,
+					html,
+				} as SendMailOptions);
+
+			res.status(EHttpStatusCode.OK).send({
+				message: "Sucessfully sent!, Thank you for contacting us!",
+				status: EHttpStatusCode.OK,
+				stattusText: "OK",
+			});
+		} catch (err) {
+			const error: ErrorException = err as ErrorException;
+			catchError(error, res);
+		}
+	},
+};
