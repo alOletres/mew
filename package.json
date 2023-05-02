@@ -8,7 +8,8 @@
 		"start:offline": "npm run build && cross-env NODE_ENV=development node ./dist/index.js",
 		"tunnel": "lt --host --port 3000 --subdomain resortserver",
 		"build": "tsc",
-		"seed": "node ./src/seeder/index.js"
+		"seed": "node ./src/seeder/index.js",
+		"start:prod": "cross-env NODE_ENV=production forever -w start dist/index.js"
 	},
 	"repository": {
 		"type": "git",
@@ -26,6 +27,7 @@
 		"bcrypt": "^5.1.0",
 		"cors": "^2.8.5",
 		"express": "^4.18.1",
+		"forever": "^4.0.3",
 		"jsonwebtoken": "^8.5.1",
 		"moment": "^2.29.4",
 		"multer": "^1.4.5-lts.1",
