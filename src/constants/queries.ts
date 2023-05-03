@@ -69,8 +69,8 @@ export const PRESET_QUERIES = {
   `,
 	CREATE_BOOKING: `
     INSERT INTO ${DB_TABLES.BOOKINGS}
-    (${bookingType}, ${cottages}, ${selected_date_from}, ${selected_date_to}, ${payment_record}, ${booker}) 
-    VALUES(?, ?, ?, ?, ?, ?)
+    (${bookingType}, ${cottages}, ${selected_date_from}, ${selected_date_to}, ${payment_record}, ${booker}, status) 
+    VALUES(?, ?, ?, ?, ?, ?, ?)
   `,
 	UPDATE_BOOKING_STATUS: `
     UPDATE ${DB_TABLES.BOOKINGS}
@@ -124,7 +124,7 @@ export const PRESET_QUERIES = {
     WHERE ${DB_COLUMNS.COTTAGE.id}=?
   `,
 	LIST_BOOKINGS: `
-    SELECT * FROM ${DB_TABLES.BOOKINGS}
+    SELECT * FROM view_bookings
   `,
 
 	LIST_REPORTS: `

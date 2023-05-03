@@ -77,6 +77,8 @@ export const BOOKING_QUERIES = {
 		try {
 			if (!connection) throw new ErrorException(ConnectivityError);
 
+			const status = details.type === '"walkin"' ? "approved" : "pending";
+
 			const values = [
 				details.type,
 				details.cottages,
@@ -84,6 +86,7 @@ export const BOOKING_QUERIES = {
 				details.dateTo,
 				details.paymentId,
 				details.user,
+				status,
 			];
 
 			const query = await connection.query(PRESET_QUERIES.CREATE_BOOKING, [
