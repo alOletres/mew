@@ -21,7 +21,6 @@ import { EHttpStatusCode } from "./../constants";
 import { isError } from "../utils/errors";
 import { SendMailOptions } from "nodemailer";
 import { MAILER_EMAIL } from "../configs/secrets";
-import moment from "moment";
 
 export const BookingsController = {
 	BOOK: async (req: Request, res: Response) => {
@@ -126,20 +125,20 @@ export const BookingsController = {
 			 * @equal to exist booking date in the database
 			 */
 
-			const checkSelectedDate = await BOOKING_QUERIES.CHECK_BOOK_DATE(
-				connection,
-				{
-					from: moment(dates.from).format("YYYY-MM-DD"),
-					to: moment(dates.to).format("YYYY-MM-DD"),
-				}
-			);
+			// const checkSelectedDate = await BOOKING_QUERIES.CHECK_BOOK_DATE(
+			// 	connection,
+			// 	{
+			// 		from: moment(dates.from).format("YYYY-MM-DD"),
+			// 		to: moment(dates.to).format("YYYY-MM-DD"),
+			// 	}
+			// );
 
-			if (checkSelectedDate) {
-				connection.rollback();
-				throw new ErrorException(
-					"Oops! Selected date from or Selected date to is already taken"
-				);
-			}
+			// if (checkSelectedDate) {
+			// 	connection.rollback();
+			// 	throw new ErrorException(
+			// 		"Oops! Selected date from or Selected date to is already taken"
+			// 	);
+			// }
 
 			/**
 			 *
