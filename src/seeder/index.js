@@ -44,7 +44,7 @@ const createBookingData = async () => {
 			firstname,
 			lastname,
 			mobile_number,
-			password: faker.internet.password(),
+			password: "test",
 			roles: "customer",
 		},
 		dates: {

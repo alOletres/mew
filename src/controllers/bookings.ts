@@ -7,6 +7,7 @@ import {
 	hashPassword,
 	sendMail,
 	readFile,
+	emailBody,
 } from "./../utils";
 import {
 	IBooking,
@@ -121,26 +122,6 @@ export const BookingsController = {
 					: details.dates;
 
 			/**
-			 * @check if the selected date from and selected date to
-			 * @equal to exist booking date in the database
-			 */
-
-			// const checkSelectedDate = await BOOKING_QUERIES.CHECK_BOOK_DATE(
-			// 	connection,
-			// 	{
-			// 		from: moment(dates.from).format("YYYY-MM-DD"),
-			// 		to: moment(dates.to).format("YYYY-MM-DD"),
-			// 	}
-			// );
-
-			// if (checkSelectedDate) {
-			// 	connection.rollback();
-			// 	throw new ErrorException(
-			// 		"Oops! Selected date from or Selected date to is already taken"
-			// 	);
-			// }
-
-			/**
 			 *
 			 * If `userid` property is defined, proceed directly
 			 * without creating a new user
@@ -237,6 +218,18 @@ export const BookingsController = {
 					user: userid,
 				});
 
+				const html = emailBody(
+					details.type === '"walkin"' ? "approved" : "pending"
+				);
+
+				if (userDetails.email)
+					sendMail({
+						from: MAILER_EMAIL,
+						to: userDetails.email,
+						subject: "RVS Resort Notification",
+						html,
+					} as SendMailOptions);
+
 				if (checkType<IQueryOk>(book, "affectedRows")) {
 					if (book.affectedRows > 0) {
 						connection.commit();
@@ -292,19 +285,14 @@ export const BookingsController = {
 				],
 			]);
 
-			const emailBody =
-				status === "approved" || status === "rejected" || status === "voided"
-					? `Hello! The purpose of this email is to inform you that your booking reservation has been ${status}.`
-					: status === "pending"
-					? `Hello! Your booking reservation is currently in ${status} state.`
-					: "";
+			const html = emailBody(status);
 
 			if (email)
 				sendMail({
 					from: MAILER_EMAIL,
 					to: email,
 					subject: "RVS Resort Notification",
-					html: emailBody,
+					html,
 				} as SendMailOptions);
 
 			if (checkType<IQueryOk>(updateStatus, "affectedRows"))
