@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Connection, Query } from "promise-mysql";
+import { Connection } from "promise-mysql";
 import {
 	ErrorException,
 	catchError,
@@ -312,24 +312,34 @@ export const BookingsController = {
 		const connection: Connection = req._config_.connection as Connection;
 
 		try {
-			const list: Query<any> = (await BOOKING_QUERIES.LIST_BOOKINGS(
+			const list: any[] = (await BOOKING_QUERIES.LIST_BOOKINGS(
 				connection
-			)) as Query<any>;
+			)) as any[];
 
-			if (checkType<Query<any>>(list, "values") && list && list.values)
-				return res.status(EHttpStatusCode.OK).send({
-					message: "Data is fetched successfully.",
-					data: list,
-				});
+			if (!list) throw new ErrorException("failed to fetch");
 
-			if (!checkType<Query<any>>(list, "OkPacket"))
-				throw new ErrorException(
-					"Something went wrong, please try again later."
-				);
+			const data =
+				list && list.length
+					? await Promise.all(
+							list.map(async (value) => {
+								if (value.receipt && typeof value.receipt !== "undefined") {
+									const actualImage: Buffer = await readFile(value.receipt);
+
+									const image = Buffer.from(actualImage).toString("base64");
+									value.receipt = image;
+								}
+
+								return value;
+							})
+					  )
+					: [];
+
+			res.status(EHttpStatusCode.OK).send({
+				message: "Data is fetched successfully.",
+				data,
+			});
 		} catch (err) {
 			const error: ErrorException = err as ErrorException;
-			console.log(err);
-
 			connection.rollback();
 			catchError(error, res);
 		}

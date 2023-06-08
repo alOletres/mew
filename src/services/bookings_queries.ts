@@ -139,13 +139,9 @@ export const BOOKING_QUERIES = {
 			return returnError(connection, err);
 		}
 	},
-	LIST_BOOKINGS: async (
-		connection: Connection
-	): Promise<Query<any> | IError> => {
+	LIST_BOOKINGS: async (connection: Connection): Promise<any[] | IError> => {
 		try {
-			const list: Query<any> = await connection.query(
-				PRESET_QUERIES.LIST_BOOKINGS
-			);
+			const list: any[] = await connection.query(PRESET_QUERIES.LIST_BOOKINGS);
 
 			return list;
 		} catch (err) {
