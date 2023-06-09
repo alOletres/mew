@@ -9,7 +9,7 @@
 		"tunnel": "lt --host --port 3000 --subdomain resortserver",
 		"build": "tsc",
 		"seed": "node ./src/seeder/index.js",
-		"start:prod": "cross-env NODE_ENV=production forever -w start dist/index.js"
+		"start:prod": "cross-env NODE_ENV=production pm2 -w start dist/index.js"
 	},
 	"repository": {
 		"type": "git",
@@ -32,6 +32,7 @@
 		"moment": "^2.29.4",
 		"multer": "^1.4.5-lts.1",
 		"nodemailer": "^6.8.0",
+		"pm2": "^5.3.0",
 		"promise-mysql": "^5.2.0"
 	},
 	"devDependencies": {
