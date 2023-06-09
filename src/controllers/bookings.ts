@@ -323,7 +323,9 @@ export const BookingsController = {
 					? await Promise.all(
 							list.map(async (value) => {
 								if (value.receipt && typeof value.receipt !== "undefined") {
-									const actualImage: Buffer = await readFile(value.receipt);
+									const actualImage: Buffer = await readFile(
+										value.receipt?.[0]
+									);
 
 									const image = Buffer.from(actualImage).toString("base64");
 									value.receipt = image;
