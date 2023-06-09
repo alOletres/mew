@@ -9,7 +9,8 @@
 		"tunnel": "lt --host --port 3000 --subdomain resortserver",
 		"build": "tsc",
 		"seed": "node ./src/seeder/index.js",
-		"start:prod": "cross-env NODE_ENV=production pm2 -w start dist/index.js"
+		"start:prod": "cross-env NODE_ENV=production pm2 -w start dist/index.js",
+		"watch": "cross-env NODE_ENV=production node dist/index.js"
 	},
 	"repository": {
 		"type": "git",
