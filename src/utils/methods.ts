@@ -16,12 +16,14 @@ import { EBookingStatuses } from "../types";
 
 const reader = fs.promises;
 
+const contact_details = `To change the details of information pls contact this number. +6390 7327 5126`;
+
 export const emailBody = (status: EBookingStatuses): string => {
 	const message =
 		status === "approved" || status === "rejected" || status === "voided"
-			? `Hello! The purpose of this email is to inform you that your booking reservation has been ${status}.`
+			? `Hello! The purpose of this email is to inform you that your booking reservation has been ${status}. ${contact_details}`
 			: status === "pending"
-			? `Hello! Your booking reservation is currently in ${status} state.`
+			? `Hello! Your booking reservation is currently in ${status} state. ${contact_details}`
 			: "";
 
 	return message;
