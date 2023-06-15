@@ -2,7 +2,12 @@ import { IUser } from ".";
 
 export type EBookingPaymentType = "gcash" | "cash";
 
-export type EBookingStatuses = "pending" | "approved" | "rejected" | "voided";
+export type EBookingStatuses =
+	| "pending"
+	| "approved"
+	| "rejected"
+	| "voided"
+	| "cancelled";
 
 export interface IDatesBooked {
 	from: string;

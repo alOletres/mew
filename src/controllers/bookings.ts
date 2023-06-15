@@ -266,7 +266,7 @@ export const BookingsController = {
 				);
 
 			if (
-				!["pending", "approved", "rejected", "voided"].includes(
+				!["pending", "approved", "rejected", "voided", "cancelled"].includes(
 					status.toLowerCase()
 				)
 			)
@@ -274,6 +274,9 @@ export const BookingsController = {
 					"Status value should either be PENDING, APPROVED, REJECTED or VOIDED."
 				);
 
+			console.log("====================================");
+			console.log("reason", reason);
+			console.log("====================================");
 			const [updateStatus, [{ email }]] = await Promise.all([
 				BOOKING_QUERIES.UPDATE_BOOKING(connection, {
 					id: bookingId,

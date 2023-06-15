@@ -123,7 +123,9 @@ export const BOOKING_QUERIES = {
 	): Promise<IQueryOk | IError> => {
 		try {
 			const reason: string | null =
-				details.status === "rejected" || details.status === "voided"
+				details.status === "rejected" ||
+				details.status === "voided" ||
+				details.status === "cancelled"
 					? details.x_reason
 						? details.x_reason
 						: null
