@@ -6,6 +6,7 @@ import {
 	TBookingType,
 	IDatesBooked,
 	IBooking,
+	ICottage,
 } from "../types";
 import { ErrorException, returnError } from "../utils";
 import { PRESET_QUERIES } from "../constants";
@@ -189,6 +190,22 @@ export const BOOKING_QUERIES = {
 					: false;
 
 			return isExist;
+		} catch (err) {
+			return returnError(connection, err);
+		}
+	},
+
+	BOOK_CHANGES: async (
+		connection: Connection,
+		{ cottages, id }: Pick<IBooking, "cottages"> & Pick<ICottage, "id">
+	): Promise<IQueryOk | IError> => {
+		try {
+			const response = await connection.query(PRESET_QUERIES.BOOK_CHANGES, [
+				cottages,
+				id,
+			]);
+
+			return response;
 		} catch (err) {
 			return returnError(connection, err);
 		}

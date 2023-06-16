@@ -168,4 +168,6 @@ export const PRESET_QUERIES = {
   `,
 
 	CHECK_BOOK_DATE: `SELECT * FROM ${DB_TABLES.BOOKINGS} WHERE selected_date_from=? OR selected_date_to=?`,
+
+	BOOK_CHANGES: `UPDATE ${DB_TABLES.BOOKINGS} SET ${cottages}=? WHERE id=?`,
 };

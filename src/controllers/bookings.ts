@@ -274,9 +274,6 @@ export const BookingsController = {
 					"Status value should either be PENDING, APPROVED, REJECTED or VOIDED."
 				);
 
-			console.log("====================================");
-			console.log("reason", reason);
-			console.log("====================================");
 			const [updateStatus, [{ email }]] = await Promise.all([
 				BOOKING_QUERIES.UPDATE_BOOKING(connection, {
 					id: bookingId,
@@ -409,6 +406,39 @@ export const BookingsController = {
 			res.status(EHttpStatusCode.OK).send({
 				message: "Report is succesfully fetched.",
 				data: list,
+			});
+		} catch (err) {
+			const error: ErrorException = err as ErrorException;
+			connection.rollback();
+			catchError(error, res);
+		}
+	},
+
+	BOOK_CHANGES: async (req: Request, res: Response) => {
+		const connection: Connection = req._config_.connection as Connection;
+		const { cottages }: Pick<IBooking, "cottages"> = req.body;
+
+		const book_id = req.params.id as string;
+		const id =
+			book_id && typeof book_id === "string"
+				? parseInt(book_id)
+				: Number(book_id);
+		try {
+			if (!cottages || !id)
+				throw new ErrorException("Something went wrong payload is required!");
+			connection.beginTransaction();
+			const book = await BOOKING_QUERIES.BOOK_CHANGES(connection, {
+				cottages,
+				id,
+			});
+			if (isError(book))
+				throw new ErrorException(
+					book.message ?? "Something went wrong in server, Try again!!"
+				);
+
+			connection.commit();
+			res.status(EHttpStatusCode.OK).send({
+				message: "Successfully Changes!",
 			});
 		} catch (err) {
 			const error: ErrorException = err as ErrorException;
